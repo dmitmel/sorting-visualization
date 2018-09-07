@@ -1,3 +1,5 @@
+extern crate rand;
+
 extern crate graphics;
 extern crate opengl_graphics;
 extern crate piston;
