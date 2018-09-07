@@ -1,0 +1,15 @@
+[package]
+publish = false
+name = "sort-visualization"
+version = "0.1.0"
+authors = ["Dmytro Meleshko <dmytro.meleshko@gmail.com>"]
+license = "MIT"
+repository = "https://github.com/dmitmel/sort-visualization.git"
+homepage = "https://github.com/dmitmel/sort-visualization"
+readme = "README.md"
+
+[dependencies]
+piston = "0.37.0"
+piston2d-graphics = "0.26.0"
+piston2d-opengl_graphics = "0.53.0"
+pistoncore-sdl2_window = {git = "https://github.com/PistonDevelopers/sdl2_window"}
