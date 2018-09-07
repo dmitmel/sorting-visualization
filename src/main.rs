@@ -23,6 +23,7 @@ fn main() {
   let mut window: Window = WindowSettings::new(WINDOW_NAME, WINDOW_SIZE)
     .opengl(OPENGL_VERSION)
     .exit_on_esc(true)
+    .vsync(true)
     .build()
     .expect("couldn't create window");
   let mut gl = GlGraphics::new(OPENGL_VERSION);
