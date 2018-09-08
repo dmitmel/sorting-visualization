@@ -11,4 +11,4 @@ macro_rules! reexport {
   )*);
 }
 
-reexport![bubble, gnome];
+reexport![bubble, gnome, insertion];
