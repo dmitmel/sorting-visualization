@@ -11,7 +11,11 @@ use piston::input::{RenderEvent, UpdateEvent};
 use piston::window::WindowSettings;
 use sdl2_window::Sdl2Window as Window;
 
+mod algorithms;
 mod app;
+mod array;
+mod utils;
+
 use app::App;
 
 const OPENGL_VERSION: OpenGL = OpenGL::V3_2;
@@ -20,6 +24,8 @@ const WINDOW_NAME: &str = "Sort Visualization";
 const WINDOW_SIZE: (u32, u32) = (640, 480);
 
 fn main() {
+  let algorithm = algorithms::BubbleSort;
+
   let mut window: Window = WindowSettings::new(WINDOW_NAME, WINDOW_SIZE)
     .opengl(OPENGL_VERSION)
     .exit_on_esc(true)
@@ -28,7 +34,7 @@ fn main() {
     .expect("couldn't create window");
   let mut gl = GlGraphics::new(OPENGL_VERSION);
 
-  let mut app = App::new();
+  let mut app = App::new(algorithm, 100);
 
   let mut events = Events::new(EventSettings::new());
   while let Some(event) = events.next(&mut window) {
