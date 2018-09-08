@@ -16,4 +16,8 @@ impl Algorithm for BubbleSort {
       }
     }
   }
+
+  fn name(&self) -> &'static str {
+    "Bubble Sort"
+  }
 }

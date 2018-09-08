@@ -2,6 +2,7 @@ use array::Array;
 
 pub trait Algorithm {
   fn sort(&self, array: Array);
+  fn name(&self) -> &'static str;
 }
 
 macro_rules! reexport {

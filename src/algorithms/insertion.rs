@@ -16,4 +16,8 @@ impl Algorithm for InsertionSort {
       }
     }
   }
+
+  fn name(&self) -> &'static str {
+    "Insertion Sort"
+  }
 }

@@ -8,6 +8,10 @@ impl Algorithm for Quicksort {
   fn sort(&self, array: Array) {
     self.sort_slice(&array, 0, array.len() as isize - 1);
   }
+
+  fn name(&self) -> &'static str {
+    "Quicksort"
+  }
 }
 
 impl Quicksort {

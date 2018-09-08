@@ -18,4 +18,8 @@ impl Algorithm for SelectionSort {
       delay(75);
     }
   }
+
+  fn name(&self) -> &'static str {
+    "Selection Sort"
+  }
 }
