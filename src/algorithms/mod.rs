@@ -4,5 +4,11 @@ pub trait Algorithm {
   fn sort(&self, array: Array);
 }
 
-pub mod bubble;
-pub use self::bubble::BubbleSort;
+macro_rules! reexport {
+  ($($name:ident),*) => ($(
+    pub mod $name;
+    pub use self::$name::*;
+  )*);
+}
+
+reexport![bubble, gnome];
