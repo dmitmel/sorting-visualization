@@ -13,9 +13,11 @@ impl Algorithm for SelectionSort {
         if array.get(j) < array.get(min_i) {
           min_i = j;
         }
+        delay(2);
       }
+
       array.swap(i, min_i);
-      delay(75);
+      delay(20);
     }
   }
 

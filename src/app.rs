@@ -1,67 +1,101 @@
 use graphics;
+use graphics::types::Color;
 use opengl_graphics::GlGraphics;
 use piston::input::{RenderArgs, UpdateArgs};
 
 use rand::{thread_rng, Rng};
 
-use algorithms::Algorithm;
-use array::{Array, Value};
+use std::sync::{Arc, Mutex};
 use std::thread;
 
-const BACKGROUND_COLOR: [f32; 4] = graphics::color::BLACK;
-const RECTANGLE_COLOR: [f32; 4] = graphics::color::WHITE;
+use algorithms::Algorithm;
+use array::{Array, ArrayAccess};
 
-pub struct App {
-  array: Array,
+const BACKGROUND_COLOR: Color = graphics::color::BLACK;
+const RECTANGLE_COLOR: Color = graphics::color::WHITE;
+const CHANGED_RECTANGLE_COLOR: Color = [1.0, 0.0, 0.0, 1.0];
+
+const MESSAGE_TIMEOUT: f64 = 0.25;
+
+pub struct State {
+  pub time: f64,
+  pub array: Vec<u32>,
+  pub array_accesses: Vec<ArrayAccess>,
 }
 
+pub struct App(Arc<Mutex<State>>);
+
 impl App {
-  pub fn new<A>(algorithm: A, max_value: Value) -> Self
+  pub fn new<A>(algorithm: A, max_value: u32) -> Self
   where
     A: Algorithm + Send + 'static,
   {
-    let mut values: Vec<Value> = (1..=max_value).collect();
-    thread_rng().shuffle(&mut values);
+    let state = Arc::new(Mutex::new(State {
+      time: 0.0,
+      array: {
+        let mut array: Vec<u32> = (1..=max_value).collect();
+        thread_rng().shuffle(&mut array);
+        array
+      },
+      array_accesses: Vec::with_capacity(1024),
+    }));
 
-    let array = Array::new(values);
-    let algorithm_array = array.clone();
+    let algorithm_state = state.clone();
 
     thread::Builder::new()
       .name("algorithm".to_string())
-      .spawn(move || algorithm.sort(algorithm_array))
-      .unwrap();
+      .spawn(move || {
+        use utils::delay;
+        delay(500);
 
-    App { array }
+        algorithm.sort(Array::new(algorithm_state));
+      }).unwrap();
+
+    App(state)
   }
 
   pub fn render(&mut self, gl: &mut GlGraphics, args: RenderArgs) {
-    let window_width = f64::from(args.width);
-    let window_height = f64::from(args.height);
+    let window_w = f64::from(args.width);
+    let window_h = f64::from(args.height);
 
     gl.draw(args.viewport(), |ctx, gl| {
       graphics::clear(BACKGROUND_COLOR, gl);
 
-      let values = self.array.lock();
+      let state = self.0.lock().unwrap();
 
-      let values_len = values.len();
-      let max_val = values.iter().max().unwrap_or(&0);
+      let array_len = state.array.len();
+      let max_value = state.array.iter().max().unwrap_or(&0);
 
-      for (index, val) in values.iter().enumerate() {
-        let width = window_width / values_len as f64;
-        let height = (*val as f64) * window_height / (*max_val as f64);
+      let mut draw_value = |index: usize, color: Color| {
+        let value = state.array[index];
 
-        let x = (index as f64) * width;
-        let y = window_height - height;
+        let w = window_w / array_len as f64;
+        let h = (value as f64) * window_h / (*max_value as f64);
+        let x = (index as f64) * w;
+        let y = window_h - h;
+        graphics::rectangle(color, [x, y, w, h], ctx.transform, gl);
+      };
 
-        graphics::rectangle(
-          RECTANGLE_COLOR,
-          [x, y, width, height],
-          ctx.transform,
-          gl,
-        );
+      for index in 0..state.array.len() {
+        draw_value(index, RECTANGLE_COLOR);
+      }
+
+      for access in &state.array_accesses {
+        let mut color = CHANGED_RECTANGLE_COLOR;
+        color[3] = (1.0 - (state.time - access.time) / MESSAGE_TIMEOUT) as f32;
+        draw_value(access.index, color);
       }
     });
   }
 
-  pub fn update(&mut self, args: UpdateArgs) {}
+  pub fn update(&mut self, args: UpdateArgs) {
+    let mut state = self.0.lock().unwrap();
+
+    state.time += args.dt;
+
+    let time = state.time;
+    state
+      .array_accesses
+      .retain(|access| time - access.time < MESSAGE_TIMEOUT);
+  }
 }

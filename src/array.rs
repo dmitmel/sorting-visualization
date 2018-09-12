@@ -1,45 +1,45 @@
 use std::sync::{Arc, Mutex, MutexGuard};
 
-pub type Value = u32;
+use app::State;
 
-#[derive(Debug)]
-pub struct Array(Arc<Mutex<Vec<Value>>>);
+pub struct Array(Arc<Mutex<State>>);
 
 impl Array {
-  pub fn new(values: Vec<Value>) -> Self {
-    Array(Arc::new(Mutex::new(values)))
+  pub fn new(state: Arc<Mutex<State>>) -> Self {
+    Array(state)
   }
 
-  pub fn lock(&self) -> MutexGuard<'_, Vec<Value>> {
+  fn lock(&self) -> MutexGuard<'_, State> {
     self.0.lock().unwrap()
   }
 
   pub fn len(&self) -> usize {
-    let values = self.lock();
-    values.len()
+    let state = self.lock();
+    state.array.len()
   }
 
-  pub fn get(&self, index: usize) -> Value {
-    let values = self.lock();
-    values[index]
+  pub fn get(&self, index: usize) -> u32 {
+    let mut state = self.lock();
+    let value = state.array[index];
+
+    let time = state.time;
+    state.array_accesses.push(ArrayAccess { time, index });
+
+    value
   }
 
-  pub fn set(&self, index: usize, value: Value) {
-    let mut values = self.lock();
-    values[index] = value
+  pub fn set(&self, index: usize, value: u32) {
+    let mut state = self.lock();
+    state.array[index] = value;
   }
 
   pub fn swap(&self, a: usize, b: usize) {
-    let mut values = self.lock();
-    values.swap(a, b)
+    let mut state = self.lock();
+    state.array.swap(a, b);
   }
 }
 
-impl Clone for Array {
-  fn clone(&self) -> Array {
-    Array(self.0.clone())
-  }
+pub struct ArrayAccess {
+  pub time: f64,
+  pub index: usize,
 }
-
-unsafe impl Send for Array {}
-unsafe impl Sync for Array {}

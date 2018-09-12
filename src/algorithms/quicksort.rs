@@ -29,7 +29,7 @@ impl Quicksort {
     for j in low..high {
       if array.get(j as usize) <= pivot {
         array.swap(i as usize, j as usize);
-        delay(25);
+        delay(30);
         i += 1;
       }
     }

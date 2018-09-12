@@ -11,8 +11,8 @@ impl Algorithm for BubbleSort {
       for j in 0..len - i - 1 {
         if array.get(j) > array.get(j + 1) {
           array.swap(j, j + 1);
-          delay(5);
         }
+        delay(5);
       }
     }
   }
