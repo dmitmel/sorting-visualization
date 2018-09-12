@@ -9,6 +9,7 @@ impl Algorithm for BubbleSort {
     let len = array.len();
     for i in 0..len - 1 {
       for j in 0..len - i - 1 {
+        array.set_highlighted_index(j);
         if array.get(j) > array.get(j + 1) {
           array.swap(j, j + 1);
         }

@@ -37,6 +37,11 @@ impl Array {
     let mut state = self.lock();
     state.array.swap(a, b);
   }
+
+  pub fn set_highlighted_index(&self, index: usize) {
+    let mut state = self.lock();
+    state.highlighted_index = Some(index);
+  }
 }
 
 pub struct ArrayAccess {

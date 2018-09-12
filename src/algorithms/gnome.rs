@@ -10,6 +10,7 @@ impl Algorithm for GnomeSort {
     let mut i = 0;
     while i < len {
       if i == 0 || array.get(i) >= array.get(i - 1) {
+        array.set_highlighted_index(i);
         i += 1;
       } else {
         array.swap(i, i - 1);

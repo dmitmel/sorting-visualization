@@ -8,6 +8,8 @@ impl Algorithm for SelectionSort {
   fn sort(&self, array: Array) {
     let len = array.len();
     for i in 0..len - 1 {
+      array.set_highlighted_index(i);
+
       let mut min_i = i;
       for j in i + 1..len {
         if array.get(j) < array.get(min_i) {

@@ -14,12 +14,14 @@ use array::{Array, ArrayAccess};
 const BACKGROUND_COLOR: Color = graphics::color::BLACK;
 const RECTANGLE_COLOR: Color = graphics::color::WHITE;
 const CHANGED_RECTANGLE_COLOR: Color = [1.0, 0.0, 0.0, 1.0];
+const HIGHLIGHTED_RECTANGLE_COLOR: Color = [0.0, 1.0, 0.0, 1.0];
 
 const MESSAGE_TIMEOUT: f64 = 0.25;
 
 pub struct State {
   pub time: f64,
   pub array: Vec<u32>,
+  pub highlighted_index: Option<usize>,
   pub array_accesses: Vec<ArrayAccess>,
 }
 
@@ -37,6 +39,7 @@ impl App {
         thread_rng().shuffle(&mut array);
         array
       },
+      highlighted_index: None,
       array_accesses: Vec::with_capacity(1024),
     }));
 
@@ -84,6 +87,10 @@ impl App {
         let mut color = CHANGED_RECTANGLE_COLOR;
         color[3] = (1.0 - (state.time - access.time) / MESSAGE_TIMEOUT) as f32;
         draw_value(access.index, color);
+      }
+
+      if let Some(index) = state.highlighted_index {
+        draw_value(index, HIGHLIGHTED_RECTANGLE_COLOR);
       }
     });
   }
