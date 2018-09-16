@@ -18,6 +18,7 @@ const HIGHLIGHTED_RECTANGLE_COLOR: Color = [0.0, 1.0, 0.0, 1.0];
 
 const MESSAGE_TIMEOUT: f64 = 0.25;
 
+#[derive(Debug)]
 pub struct State {
   pub time: f64,
   pub array: Vec<u32>,
@@ -25,6 +26,7 @@ pub struct State {
   pub array_accesses: Vec<ArrayAccess>,
 }
 
+#[derive(Debug)]
 pub struct App(Arc<Mutex<State>>);
 
 impl App {

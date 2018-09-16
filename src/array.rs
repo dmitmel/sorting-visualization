@@ -2,6 +2,7 @@ use std::sync::{Arc, Mutex, MutexGuard};
 
 use app::State;
 
+#[derive(Debug)]
 pub struct Array(Arc<Mutex<State>>);
 
 impl Array {
@@ -44,6 +45,7 @@ impl Array {
   }
 }
 
+#[derive(Debug)]
 pub struct ArrayAccess {
   pub time: f64,
   pub index: usize,
