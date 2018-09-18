@@ -18,10 +18,25 @@ impl Quicksort {
   fn sort_slice(&self, array: &Array, low: isize, high: isize) {
     if low < high {
       let pivot = self.partition(array, low, high);
-      array.set_color(pivot as usize, [0.0, 1.0, 0.0, 1.0]);
+
+      for i in low..=pivot - 1 {
+        array.set_color(i as usize, [0.0, 1.0, 0.0, 0.3]);
+      }
+      array.set_color(pivot as usize, [1.0, 0.0, 0.0, 1.0]);
+      for i in pivot + 1..=high {
+        array.set_color(i as usize, [0.0, 0.0, 1.0, 0.3]);
+      }
 
       self.sort_slice(array, low, pivot - 1);
       self.sort_slice(array, pivot + 1, high);
+
+      for i in low..=pivot - 1 {
+        array.reset_color(i as usize);
+      }
+      array.reset_color(pivot as usize);
+      for i in pivot + 1..=high {
+        array.reset_color(i as usize);
+      }
     }
   }
 
