@@ -1,6 +1,8 @@
 use std::sync::{Arc, Mutex, MutexGuard};
 
 use app::State;
+use graphics::color;
+use graphics::types::Color;
 
 #[derive(Debug)]
 pub struct Array(Arc<Mutex<State>>);
@@ -39,9 +41,20 @@ impl Array {
     state.array.swap(a, b);
   }
 
-  pub fn set_highlighted_index(&self, index: usize) {
+  pub fn reset_all_colors(&self) {
     let mut state = self.lock();
-    state.highlighted_index = Some(index);
+    for color in state.colors.iter_mut() {
+      *color = color::TRANSPARENT;
+    }
+  }
+
+  pub fn reset_color(&self, index: usize) {
+    self.set_color(index, color::TRANSPARENT);
+  }
+
+  pub fn set_color(&self, index: usize, color: Color) {
+    let mut state = self.lock();
+    state.colors[index] = color;
   }
 }
 

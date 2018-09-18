@@ -8,7 +8,7 @@ impl Algorithm for CycleSort {
   fn sort(&self, array: Array) {
     let len = array.len();
     for cycle_start in 0..len - 1 {
-      array.set_highlighted_index(cycle_start);
+      array.set_color(cycle_start, [0.0, 1.0, 0.0, 1.0]);
 
       let mut item = array.get(cycle_start);
       let mut sorted_index = self.find_sorted_index(&array, cycle_start, item);
@@ -26,7 +26,7 @@ impl Algorithm for CycleSort {
       array.set(sorted_index, tmp);
 
       while sorted_index != cycle_start {
-        array.set_highlighted_index(sorted_index);
+        array.set_color(sorted_index, [0.0, 1.0, 0.0, 1.0]);
         sorted_index = cycle_start;
 
         for i in cycle_start + 1..len {

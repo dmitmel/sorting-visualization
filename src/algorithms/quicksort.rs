@@ -18,7 +18,8 @@ impl Quicksort {
   fn sort_slice(&self, array: &Array, low: isize, high: isize) {
     if low < high {
       let pivot = self.partition(array, low, high);
-      array.set_highlighted_index(pivot as usize);
+      array.set_color(pivot as usize, [0.0, 1.0, 0.0, 1.0]);
+
       self.sort_slice(array, low, pivot - 1);
       self.sort_slice(array, pivot + 1, high);
     }

@@ -14,7 +14,6 @@ use array::{Array, ArrayAccess};
 const BACKGROUND_COLOR: Color = graphics::color::BLACK;
 const RECTANGLE_COLOR: Color = graphics::color::WHITE;
 const CHANGED_RECTANGLE_COLOR: Color = [1.0, 0.0, 0.0, 1.0];
-const HIGHLIGHTED_RECTANGLE_COLOR: Color = [0.0, 1.0, 0.0, 1.0];
 
 const MESSAGE_TIMEOUT: f64 = 0.25;
 
@@ -22,7 +21,7 @@ const MESSAGE_TIMEOUT: f64 = 0.25;
 pub struct State {
   pub time: f64,
   pub array: Vec<u32>,
-  pub highlighted_index: Option<usize>,
+  pub colors: Vec<Color>,
   pub array_accesses: Vec<ArrayAccess>,
 }
 
@@ -34,14 +33,15 @@ impl App {
   where
     A: Algorithm + Send + 'static,
   {
+    let mut array: Vec<u32> = (1..=max_value).collect();
+    thread_rng().shuffle(&mut array);
+
+    let colors = vec![graphics::color::TRANSPARENT; array.len()];
+
     let state = Arc::new(Mutex::new(State {
       time: 0.0,
-      array: {
-        let mut array: Vec<u32> = (1..=max_value).collect();
-        thread_rng().shuffle(&mut array);
-        array
-      },
-      highlighted_index: None,
+      array,
+      colors,
       array_accesses: Vec::with_capacity(1024),
     }));
 
@@ -91,8 +91,8 @@ impl App {
         draw_value(access.index, color);
       }
 
-      if let Some(index) = state.highlighted_index {
-        draw_value(index, HIGHLIGHTED_RECTANGLE_COLOR);
+      for (index, color) in state.colors.iter().enumerate() {
+        draw_value(index, *color);
       }
     });
   }

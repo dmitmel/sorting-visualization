@@ -9,12 +9,14 @@ impl Algorithm for GnomeSort {
     let len = array.len();
     let mut i = 0;
     while i < len {
+      array.set_color(i, [0.0, 1.0, 0.0, 0.8]);
+      delay(5);
+      array.reset_color(i);
+
       if i == 0 || array.get(i) >= array.get(i - 1) {
-        array.set_highlighted_index(i);
         i += 1;
       } else {
         array.swap(i, i - 1);
-        delay(5);
         i -= 1;
       }
     }
