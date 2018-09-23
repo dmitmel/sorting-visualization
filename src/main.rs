@@ -7,7 +7,7 @@ extern crate sdl2_window;
 
 use opengl_graphics::{GlGraphics, OpenGL};
 use piston::event_loop::{EventSettings, Events};
-use piston::input::{RenderEvent, UpdateEvent};
+use piston::input::*;
 use piston::window::WindowSettings;
 use sdl2_window::Sdl2Window as Window;
 
@@ -40,12 +40,11 @@ fn main() {
 
   let mut events = Events::new(EventSettings::new());
   while let Some(event) = events.next(&mut window) {
-    if let Some(render_args) = event.render_args() {
-      app.render(&mut gl, render_args);
-    }
-
-    if let Some(update_args) = event.update_args() {
-      app.update(update_args);
+    match event {
+      Event::Loop(Loop::Render(args)) => app.render(&mut gl, args),
+      Event::Loop(Loop::Update(args)) => app.update(args),
+      Event::Input(Input::Button(args)) => app.button(args),
+      _ => {}
     }
   }
 }

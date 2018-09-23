@@ -1,7 +1,7 @@
 use graphics;
 use graphics::types::Color;
 use opengl_graphics::GlGraphics;
-use piston::input::{RenderArgs, UpdateArgs};
+use piston::input::*;
 
 use rand::{thread_rng, Rng};
 
@@ -106,5 +106,9 @@ impl App {
     state
       .array_accesses
       .retain(|access| time - access.time < MESSAGE_TIMEOUT);
+  }
+
+  pub fn button(&mut self, args: ButtonArgs) {
+    println!("{:?}", args);
   }
 }
