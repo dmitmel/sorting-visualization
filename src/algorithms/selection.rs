@@ -24,11 +24,11 @@ impl Algorithm for SelectionSort {
         delay(2);
       }
 
+      delay(20);
+
       array.swap(i, min_i);
       array.reset_color(i);
       array.reset_color(min_i);
-
-      delay(20);
     }
   }
 

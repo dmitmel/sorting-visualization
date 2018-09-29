@@ -46,9 +46,9 @@ impl Quicksort {
     for j in low..high {
       if array.get(j as usize) <= pivot {
         array.swap(i as usize, j as usize);
-        delay(30);
         i += 1;
       }
+      delay(15);
     }
     array.swap(i as usize, high as usize);
     i
