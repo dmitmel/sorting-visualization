@@ -1,6 +1,5 @@
 use algorithms::Algorithm;
 use array::Array;
-use utils::delay;
 
 pub struct CycleSort;
 
@@ -32,13 +31,13 @@ impl Algorithm for CycleSort {
         for i in cycle_start + 1..len {
           if array.get(i) < item {
             sorted_index += 1;
-            delay(5);
+            array.wait(5);
           }
         }
 
         while item == array.get(sorted_index) {
           sorted_index += 1;
-          delay(5);
+          array.wait(5);
         }
 
         let tmp = item;
@@ -66,7 +65,7 @@ impl CycleSort {
     for i in cycle_start + 1..len {
       if array.get(i) < item {
         sorted_index += 1;
-        delay(3);
+        array.wait(3);
       }
     }
 

@@ -1,6 +1,5 @@
 use algorithms::Algorithm;
 use array::Array;
-use utils::delay;
 
 pub struct BubbleSort;
 
@@ -16,7 +15,7 @@ impl Algorithm for BubbleSort {
         if array.get(j) > array.get(j + 1) {
           array.swap(j, j + 1);
         }
-        delay(5);
+        array.wait(5);
         array.reset_color(j);
       }
 

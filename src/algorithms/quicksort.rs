@@ -1,6 +1,5 @@
 use algorithms::Algorithm;
 use array::Array;
-use utils::delay;
 
 pub struct Quicksort;
 
@@ -48,7 +47,7 @@ impl Quicksort {
         array.swap(i as usize, j as usize);
         i += 1;
       }
-      delay(15);
+      array.wait(15);
     }
     array.swap(i as usize, high as usize);
     i

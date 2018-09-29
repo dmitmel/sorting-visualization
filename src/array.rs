@@ -11,6 +11,18 @@ impl Array {
     Array(state)
   }
 
+  pub fn wait(&self, ms: u64) {
+    use std::thread;
+    use std::time::Duration;
+
+    thread::sleep(Duration::from_millis(ms));
+
+    let mut anim = self.0.animation();
+    while anim.paused {
+      anim = self.0.pause_notifier.wait(anim).unwrap();
+    }
+  }
+
   pub fn len(&self) -> usize {
     let anim = self.0.animation();
     anim.array.len()

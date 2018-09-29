@@ -5,7 +5,7 @@ use piston::input::*;
 
 use rand::{thread_rng, Rng};
 
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc, Condvar, Mutex};
 use std::thread;
 
 use algorithms::Algorithm;
@@ -35,10 +35,12 @@ impl App {
     let state = Arc::new(State {
       animation: Mutex::new(AnimationState {
         time: 0.0,
+        paused: true,
         array,
         colors,
         array_accesses: Vec::with_capacity(1024),
       }),
+      pause_notifier: Condvar::new(),
     });
 
     let algorithm_state = state.clone();
@@ -46,10 +48,9 @@ impl App {
     thread::Builder::new()
       .name("algorithm".to_string())
       .spawn(move || {
-        use utils::delay;
-        delay(500);
-
-        algorithm.sort(Array::new(algorithm_state));
+        let array = Array::new(algorithm_state);
+        array.wait(500);
+        algorithm.sort(array);
       }).unwrap();
 
     App(state)
@@ -97,7 +98,9 @@ impl App {
   pub fn update(&mut self, args: UpdateArgs) {
     let mut anim = self.0.animation();
 
-    anim.time += args.dt;
+    if !anim.paused {
+      anim.time += args.dt;
+    }
 
     let time = anim.time;
     anim
@@ -106,6 +109,13 @@ impl App {
   }
 
   pub fn button(&mut self, args: ButtonArgs) {
-    println!("{:?}", args);
+    let mut anim = self.0.animation();
+
+    if let Button::Keyboard(key) = args.button {
+      if let (Key::Space, ButtonState::Press) = (key, args.state) {
+        anim.paused = !anim.paused;
+        self.0.pause_notifier.notify_all();
+      }
+    }
   }
 }

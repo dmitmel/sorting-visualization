@@ -5,8 +5,8 @@ extern crate opengl_graphics;
 extern crate piston;
 extern crate sdl2_window;
 
-use opengl_graphics::{GlGraphics, OpenGL};
-use piston::event_loop::{EventSettings, Events};
+use opengl_graphics::*;
+use piston::event_loop::*;
 use piston::input::*;
 use piston::window::WindowSettings;
 use sdl2_window::Sdl2Window as Window;
@@ -15,7 +15,6 @@ mod algorithms;
 mod app;
 mod array;
 mod state;
-mod utils;
 
 use algorithms::Algorithm;
 use app::App;
@@ -38,6 +37,8 @@ fn main() {
   let mut gl = GlGraphics::new(OPENGL_VERSION);
 
   let mut app = App::new(algorithm, 100);
+
+  println!("Press [Space] to start the animation");
 
   let mut events = Events::new(EventSettings::new());
   while let Some(event) = events.next(&mut window) {

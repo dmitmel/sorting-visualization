@@ -1,6 +1,5 @@
 use algorithms::Algorithm;
 use array::Array;
-use utils::delay;
 
 pub struct SelectionSort;
 
@@ -21,10 +20,10 @@ impl Algorithm for SelectionSort {
           array.set_color(min_i, [0.0, 1.0, 0.0, 0.7]);
         }
 
-        delay(2);
+        array.wait(2);
       }
 
-      delay(20);
+      array.wait(20);
 
       array.swap(i, min_i);
       array.reset_color(i);
