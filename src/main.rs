@@ -14,6 +14,7 @@ use sdl2_window::Sdl2Window as Window;
 mod algorithms;
 mod app;
 mod array;
+mod state;
 mod utils;
 
 use algorithms::Algorithm;

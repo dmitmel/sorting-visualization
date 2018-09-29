@@ -1,49 +1,44 @@
-use std::sync::{Arc, Mutex, MutexGuard};
-
-use app::State;
 use graphics::color;
 use graphics::types::Color;
 
+use state::SharedState;
+
 #[derive(Debug)]
-pub struct Array(Arc<Mutex<State>>);
+pub struct Array(SharedState);
 
 impl Array {
-  pub fn new(state: Arc<Mutex<State>>) -> Self {
+  pub fn new(state: SharedState) -> Self {
     Array(state)
   }
 
-  fn lock(&self) -> MutexGuard<'_, State> {
-    self.0.lock().unwrap()
-  }
-
   pub fn len(&self) -> usize {
-    let state = self.lock();
-    state.array.len()
+    let anim = self.0.animation();
+    anim.array.len()
   }
 
   pub fn get(&self, index: usize) -> u32 {
-    let mut state = self.lock();
-    let value = state.array[index];
+    let mut anim = self.0.animation();
+    let value = anim.array[index];
 
-    let time = state.time;
-    state.array_accesses.push(ArrayAccess { time, index });
+    let time = anim.time;
+    anim.array_accesses.push(ArrayAccess { time, index });
 
     value
   }
 
   pub fn set(&self, index: usize, value: u32) {
-    let mut state = self.lock();
-    state.array[index] = value;
+    let mut anim = self.0.animation();
+    anim.array[index] = value;
   }
 
   pub fn swap(&self, a: usize, b: usize) {
-    let mut state = self.lock();
-    state.array.swap(a, b);
+    let mut anim = self.0.animation();
+    anim.array.swap(a, b);
   }
 
   pub fn reset_all_colors(&self) {
-    let mut state = self.lock();
-    for color in state.colors.iter_mut() {
+    let mut anim = self.0.animation();
+    for color in anim.colors.iter_mut() {
       *color = color::TRANSPARENT;
     }
   }
@@ -53,8 +48,8 @@ impl Array {
   }
 
   pub fn set_color(&self, index: usize, color: Color) {
-    let mut state = self.lock();
-    state.colors[index] = color;
+    let mut anim = self.0.animation();
+    anim.colors[index] = color;
   }
 }
 

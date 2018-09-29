@@ -9,7 +9,9 @@ use std::sync::{Arc, Mutex};
 use std::thread;
 
 use algorithms::Algorithm;
-use array::{Array, ArrayAccess};
+use array::Array;
+
+use state::{AnimationState, SharedState, State};
 
 const BACKGROUND_COLOR: Color = graphics::color::BLACK;
 const VALUE_COLOR: Color = graphics::color::WHITE;
@@ -18,15 +20,7 @@ const ACCESSSED_VALUE_COLOR: Color = [1.0, 0.0, 0.0, 1.0];
 const ACCESSED_VALUE_TIMEOUT: f64 = 0.25;
 
 #[derive(Debug)]
-pub struct State {
-  pub time: f64,
-  pub array: Vec<u32>,
-  pub colors: Vec<Color>,
-  pub array_accesses: Vec<ArrayAccess>,
-}
-
-#[derive(Debug)]
-pub struct App(Arc<Mutex<State>>);
+pub struct App(SharedState);
 
 impl App {
   pub fn new<A>(algorithm: A, max_value: u32) -> Self
@@ -38,12 +32,14 @@ impl App {
 
     let colors = vec![graphics::color::TRANSPARENT; array.len()];
 
-    let state = Arc::new(Mutex::new(State {
-      time: 0.0,
-      array,
-      colors,
-      array_accesses: Vec::with_capacity(1024),
-    }));
+    let state = Arc::new(State {
+      animation: Mutex::new(AnimationState {
+        time: 0.0,
+        array,
+        colors,
+        array_accesses: Vec::with_capacity(1024),
+      }),
+    });
 
     let algorithm_state = state.clone();
 
@@ -66,13 +62,13 @@ impl App {
     gl.draw(args.viewport(), |ctx, gl| {
       graphics::clear(BACKGROUND_COLOR, gl);
 
-      let state = self.0.lock().unwrap();
+      let anim = self.0.animation();
 
-      let array_len = state.array.len();
-      let max_value = state.array.iter().max().unwrap_or(&0);
+      let array_len = anim.array.len();
+      let max_value = anim.array.iter().max().unwrap_or(&0);
 
       let mut draw_value = |index: usize, color: Color| {
-        let value = state.array[index];
+        let value = anim.array[index];
 
         let w = window_w / array_len as f64;
         let h = (value as f64) * window_h / (*max_value as f64);
@@ -81,30 +77,30 @@ impl App {
         graphics::rectangle(color, [x, y, w, h], ctx.transform, gl);
       };
 
-      for index in 0..state.array.len() {
+      for index in 0..anim.array.len() {
         draw_value(index, VALUE_COLOR);
       }
 
-      for access in &state.array_accesses {
+      for access in &anim.array_accesses {
         let mut color = ACCESSSED_VALUE_COLOR;
         color[3] =
-          (1.0 - (state.time - access.time) / ACCESSED_VALUE_TIMEOUT) as f32;
+          (1.0 - (anim.time - access.time) / ACCESSED_VALUE_TIMEOUT) as f32;
         draw_value(access.index, color);
       }
 
-      for (index, color) in state.colors.iter().enumerate() {
+      for (index, color) in anim.colors.iter().enumerate() {
         draw_value(index, *color);
       }
     });
   }
 
   pub fn update(&mut self, args: UpdateArgs) {
-    let mut state = self.0.lock().unwrap();
+    let mut anim = self.0.animation();
 
-    state.time += args.dt;
+    anim.time += args.dt;
 
-    let time = state.time;
-    state
+    let time = anim.time;
+    anim
       .array_accesses
       .retain(|access| time - access.time < ACCESSED_VALUE_TIMEOUT);
   }
