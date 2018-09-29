@@ -12,10 +12,10 @@ use algorithms::Algorithm;
 use array::{Array, ArrayAccess};
 
 const BACKGROUND_COLOR: Color = graphics::color::BLACK;
-const RECTANGLE_COLOR: Color = graphics::color::WHITE;
-const CHANGED_RECTANGLE_COLOR: Color = [1.0, 0.0, 0.0, 1.0];
+const VALUE_COLOR: Color = graphics::color::WHITE;
+const ACCESSSED_VALUE_COLOR: Color = [1.0, 0.0, 0.0, 1.0];
 
-const MESSAGE_TIMEOUT: f64 = 0.25;
+const ACCESSED_VALUE_TIMEOUT: f64 = 0.25;
 
 #[derive(Debug)]
 pub struct State {
@@ -82,12 +82,13 @@ impl App {
       };
 
       for index in 0..state.array.len() {
-        draw_value(index, RECTANGLE_COLOR);
+        draw_value(index, VALUE_COLOR);
       }
 
       for access in &state.array_accesses {
-        let mut color = CHANGED_RECTANGLE_COLOR;
-        color[3] = (1.0 - (state.time - access.time) / MESSAGE_TIMEOUT) as f32;
+        let mut color = ACCESSSED_VALUE_COLOR;
+        color[3] =
+          (1.0 - (state.time - access.time) / ACCESSED_VALUE_TIMEOUT) as f32;
         draw_value(access.index, color);
       }
 
@@ -105,7 +106,7 @@ impl App {
     let time = state.time;
     state
       .array_accesses
-      .retain(|access| time - access.time < MESSAGE_TIMEOUT);
+      .retain(|access| time - access.time < ACCESSED_VALUE_TIMEOUT);
   }
 
   pub fn button(&mut self, args: ButtonArgs) {
