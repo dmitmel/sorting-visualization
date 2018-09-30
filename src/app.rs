@@ -116,10 +116,17 @@ impl App {
       match (key, args.state) {
         (Key::Space, ButtonState::Press) => {
           anim.paused = !anim.paused;
+          println!("paused = {}", anim.paused);
           self.0.pause_notifier.notify_all();
         }
-        (Key::Up, ButtonState::Press) => anim.speed *= 2.0,
-        (Key::Down, ButtonState::Press) => anim.speed /= 2.0,
+        (Key::Up, ButtonState::Press) => {
+          anim.speed *= 2.0;
+          println!("speed = {}", anim.speed);
+        }
+        (Key::Down, ButtonState::Press) => {
+          anim.speed /= 2.0;
+          println!("speed = {}", anim.speed);
+        }
         _ => {}
       }
     }
