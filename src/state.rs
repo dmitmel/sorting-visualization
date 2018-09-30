@@ -20,6 +20,7 @@ impl State {
 #[derive(Debug)]
 pub struct AnimationState {
   pub time: f64,
+  pub speed: f64,
   pub paused: bool,
   pub array: Vec<u32>,
   pub colors: Vec<Color>,

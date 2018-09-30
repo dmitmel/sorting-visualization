@@ -35,6 +35,7 @@ impl App {
     let state = Arc::new(State {
       animation: Mutex::new(AnimationState {
         time: 0.0,
+        speed: 1.0,
         paused: true,
         array,
         colors,
@@ -99,7 +100,7 @@ impl App {
     let mut anim = self.0.animation();
 
     if !anim.paused {
-      anim.time += args.dt;
+      anim.time += args.dt * anim.speed;
     }
 
     let time = anim.time;
@@ -112,9 +113,14 @@ impl App {
     let mut anim = self.0.animation();
 
     if let Button::Keyboard(key) = args.button {
-      if let (Key::Space, ButtonState::Press) = (key, args.state) {
-        anim.paused = !anim.paused;
-        self.0.pause_notifier.notify_all();
+      match (key, args.state) {
+        (Key::Space, ButtonState::Press) => {
+          anim.paused = !anim.paused;
+          self.0.pause_notifier.notify_all();
+        }
+        (Key::Up, ButtonState::Press) => anim.speed *= 2.0,
+        (Key::Down, ButtonState::Press) => anim.speed /= 2.0,
+        _ => {}
       }
     }
   }
