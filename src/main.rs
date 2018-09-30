@@ -38,9 +38,10 @@ fn main() {
 
   let mut app = App::new(algorithm, 100);
 
-  println!("Press [Space] to start the animation");
+  println!("Press [Space] to pause/resume the animation");
   println!("Press [Up]    to speed up the animation");
   println!("Press [Down]  to slow down the animation");
+  println!();
 
   let mut events = Events::new(EventSettings::new());
   while let Some(event) = events.next(&mut window) {
