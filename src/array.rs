@@ -51,13 +51,6 @@ impl Array {
     anim.array.swap(a, b);
   }
 
-  pub fn reset_all_colors(&self) {
-    let mut anim = self.0.animation();
-    for color in anim.colors.iter_mut() {
-      *color = color::TRANSPARENT;
-    }
-  }
-
   pub fn reset_color(&self, index: usize) {
     self.set_color(index, color::TRANSPARENT);
   }
