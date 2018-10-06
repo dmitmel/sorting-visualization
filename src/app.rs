@@ -112,23 +112,31 @@ impl App {
   pub fn button(&mut self, args: ButtonArgs) {
     let mut anim = self.0.animation();
 
-    if let Button::Keyboard(key) = args.button {
-      match (key, args.state) {
-        (Key::Space, ButtonState::Press) => {
-          anim.paused = !anim.paused;
-          println!("paused = {}", anim.paused);
-          self.0.pause_notifier.notify_all();
-        }
-        (Key::Up, ButtonState::Press) => {
-          anim.speed *= 2.0;
-          println!("speed = {}", anim.speed);
-        }
-        (Key::Down, ButtonState::Press) => {
-          anim.speed /= 2.0;
-          println!("speed = {}", anim.speed);
-        }
-        _ => {}
+    use Button::Keyboard;
+    use ButtonState::Press;
+
+    let state_was_updated = match (args.button, args.state) {
+      (Keyboard(Key::Space), Press) => {
+        anim.paused = !anim.paused;
+        self.0.pause_notifier.notify_all();
+        true
       }
+
+      (Keyboard(Key::Up), Press) => {
+        anim.speed *= 2.0;
+        true
+      }
+
+      (Keyboard(Key::Down), Press) => {
+        anim.speed /= 2.0;
+        true
+      }
+
+      _ => false,
+    };
+
+    if state_was_updated {
+      println!("paused = {}, speed = {}", anim.paused, anim.speed);
     }
   }
 }
