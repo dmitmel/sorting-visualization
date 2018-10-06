@@ -19,16 +19,19 @@ mod state;
 use algorithms::Algorithm;
 use app::App;
 
-const OPENGL_VERSION: OpenGL = OpenGL::V3_2;
+/// Minimum supported version of OpenGL.
+const OPENGL_VERSION: OpenGL = OpenGL::V3_0;
 
-const WINDOW_NAME: &str = "Sort Visualization";
+/// Title of the main window.
+const WINDOW_TITLE: &str = "Sort Visualization";
+/// Initial size of the main window.
 const WINDOW_SIZE: (u32, u32) = (640, 480);
 
 fn main() {
   let algorithm = algorithms::BubbleSort;
 
-  let window_name = format!("{} - {}", WINDOW_NAME, algorithm.name());
-  let mut window: Window = WindowSettings::new(window_name, WINDOW_SIZE)
+  let title = format!("{} - {}", WINDOW_TITLE, algorithm.name());
+  let mut window: Window = WindowSettings::new(title, WINDOW_SIZE)
     .opengl(OPENGL_VERSION)
     .exit_on_esc(true)
     .vsync(true)
@@ -36,7 +39,11 @@ fn main() {
     .expect("couldn't create window");
   let mut gl = GlGraphics::new(OPENGL_VERSION);
 
-  let mut app = App::new(algorithm, 100);
+  let mut array: Vec<u32> = (1..=100).collect();
+  use rand::{thread_rng, Rng};
+  thread_rng().shuffle(&mut array);
+
+  let mut app = App::init(algorithm, array);
 
   println!("Press [Space] to pause/resume the animation");
   println!("Press [Up]    to speed up the animation");

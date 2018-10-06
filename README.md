@@ -18,6 +18,12 @@ cargo run
 
 TODO
 
+## Building docs
+
+```bash
+cargo doc --document-private-items --open
+```
+
 ## Contribute
 
 PRs accepted.
