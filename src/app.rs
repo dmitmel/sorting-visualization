@@ -77,6 +77,8 @@ impl App {
     gl.draw(args.viewport(), |ctx, gl| {
       graphics::clear(BACKGROUND_COLOR, gl);
 
+      // lock the animation state for the whole rendering cycle so that
+      // algorithm thread doesn't change something while rendering
       let anim = self.0.animation();
 
       let len = anim.array.len();
