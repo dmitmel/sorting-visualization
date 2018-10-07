@@ -19,8 +19,10 @@ mod state;
 use algorithms::Algorithm;
 use app::App;
 
-/// Minimum supported version of OpenGL.
-const OPENGL_VERSION: OpenGL = OpenGL::V3_0;
+/// Required version of OpenGL.
+///
+/// _Note:_ change this to [`OpenGL::V2_1`] if it doesn't work.
+const OPENGL_VERSION: OpenGL = OpenGL::V3_2;
 
 /// Title of the main window.
 const WINDOW_TITLE: &str = "Sort Visualization";
