@@ -1,6 +1,9 @@
+//! [Cycle sort](https://en.wikipedia.org/wiki/Cycle_sort)
+
 use algorithms::Algorithm;
 use array::Array;
 
+/// [Cycle sort](https://en.wikipedia.org/wiki/Cycle_sort)
 pub struct CycleSort;
 
 impl Algorithm for CycleSort {

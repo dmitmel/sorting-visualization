@@ -1,6 +1,9 @@
+//! [Quicksort](https://en.wikipedia.org/wiki/Quicksort)
+
 use algorithms::Algorithm;
 use array::Array;
 
+/// [Quicksort](https://en.wikipedia.org/wiki/Quicksort)
 pub struct Quicksort;
 
 impl Algorithm for Quicksort {

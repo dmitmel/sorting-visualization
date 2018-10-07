@@ -1,6 +1,9 @@
+//! [Gnome sort](https://en.wikipedia.org/wiki/Gnome_sort)
+
 use algorithms::Algorithm;
 use array::Array;
 
+/// [Gnome sort](https://en.wikipedia.org/wiki/Gnome_sort)
 pub struct GnomeSort;
 
 impl Algorithm for GnomeSort {
