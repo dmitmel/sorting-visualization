@@ -1,6 +1,9 @@
 language: rust
 sudo: false
+
 rust: stable
+cache: cargo
+
 before_script: |
   pip install 'travis-cargo<0.2' --user &&
   export PATH="$HOME/.local/bin:$PATH"
@@ -9,6 +12,10 @@ script: |
   travis-cargo test &&
   travis-cargo --only stable doc
 after_success: travis-cargo --only stable doc-upload
+
 env:
   global:
     secure: rLsH7CszeSpt5NZUuksJbB4PAJlB2DDbsrcYmquUjHNjSQuatLMp8kZju6s+wAPUfpbEr6W1+Gz2nPPGj6pETYhggNkN/aQ+GEOInVXLEC4/rRbGDGhjwbqsj9xVp8eu4kD8PpDfdQTYFDck+hXNwzMLcjmqMqKYMaFGWzExdkQdc34xTQlImE7Vz7s/sBWgOplGdfCWBI1U0lLOZED3cKqY9uYJChZq0nIZ1ZbIAmlsdm/oVSqrPgbDClECDOkNNLBgE+TuPOKbJy6nUesY55gUT/+LfwxhakQF00ik93USbYHGa40bfDWFh9sg/YMc8PcNzF+pn1Ctgw/TB0JQF0AioUeU1BUm6IZ5yBCUDWqhTwfoMNcSUNntuwsdorhgUj7AfirZ9GoIdCnVTHQX+u43erTByZqMCzm1thNmKnwu5L7dWImSDb6crSNN/kxYhDGoWN8rfhELy0UYSG6citVsDkqRO9y8FXZtA2ZFJ5w4aoZbiU+kE2TjnSkGEQGTk6Z087LLFtikSd0wxtXGhrlfp95V5YcYMptaaDeYdo5PX/5YdicFwrqlormdTOpTi+3G1C90g8uR2Qg2NJuTQguMJLPbcnKmbFlxwzwaQhhUuFgiaM2oRFd5ja0sR/Uog5PU7oqkHFqLDwhZodSJt8XRWMm854WLl/cmqoYZT1Y=
+
+notifications:
+  webhooks: https://fathomless-fjord-24024.herokuapp.com/notify
