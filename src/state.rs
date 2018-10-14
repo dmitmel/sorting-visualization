@@ -2,7 +2,6 @@
 
 use std::sync::{Arc, Condvar, Mutex, MutexGuard};
 
-use array::ArrayAccess;
 use graphics::types::Color;
 
 /// A wrapper around [`State`] that can be [safely shared](Send) between threads.
@@ -62,4 +61,10 @@ pub struct AnimationState {
   /// from the array a new [`ArrayAccess`] with index and the current
   /// [time](AnimationState::time) is pushed to this vector.
   pub array_accesses: Vec<ArrayAccess>,
+}
+
+#[derive(Debug)]
+pub struct ArrayAccess {
+  pub time: f64,
+  pub index: usize,
 }
