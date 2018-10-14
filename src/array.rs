@@ -15,9 +15,9 @@ impl Array {
     use std::thread;
     use std::time::Duration;
 
-    thread::sleep(Duration::from_millis({
+    thread::sleep(Duration::from_micros({
       let anim = self.0.animation();
-      (ms as f64 / anim.speed) as u64
+      (ms as f64 * 1000.0 / anim.speed) as u64
     }));
 
     let mut anim = self.0.animation();
