@@ -39,7 +39,7 @@ fn main() {
     range_start,
     range_end,
     order,
-  } = cli::get_options();
+  } = cli::parse_options();
 
   let title = format!("{} - {}", WINDOW_TITLE, algorithm.name());
   let mut window: Window = WindowSettings::new(title, WINDOW_SIZE)
