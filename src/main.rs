@@ -1,6 +1,5 @@
-// uncomment the following lines when https://github.com/rust-lang/rust/issues/44732 is closed
-// #![feature(external_doc)]
-// #![doc(include = "../README.md")]
+#![feature(external_doc)]
+#![doc(include = "../README.md")]
 
 #[macro_use]
 extern crate clap;

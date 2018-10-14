@@ -1,7 +1,5 @@
 language: rust
-sudo: false
-
-rust: stable
+rust: nightly # nightly version is requierd for building docs
 cache: cargo
 
 addons:
@@ -9,15 +7,14 @@ addons:
     packages:
       - libsdl2-dev
 
-before_script: |
-  pip install 'travis-cargo<0.2' --user &&
-  export PATH="$HOME/.local/bin:$PATH"
-script: |
-  travis-cargo build &&
-  travis-cargo test &&
-  travis-cargo --only stable doc
 after_success: |
-  travis-cargo --only stable doc-upload
+  [ $TRAVIS_BRANCH = master ] &&
+  [ $TRAVIS_PULL_REQUEST = false ] &&
+  cargo doc --document-private-items &&
+  echo "<meta http-equiv=\"refresh\" content=\"0;url=`echo $TRAVIS_REPO_SLUG | cut -d '/' -f 2 | tr '-' '_'`/index.html\">" > target/doc/index.html &&
+  sudo pip install ghp-import &&
+  ghp-import -n target/doc &&
+  git push -fq https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages
 
 env:
   global:
