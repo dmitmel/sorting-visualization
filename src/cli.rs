@@ -11,13 +11,13 @@ use algorithms::Algorithm;
 /// [get its value](clap::ArgMatches::value_of).
 const ALGORITHM_ARG: &str = "ALGORITHM";
 /// [Internal name](clap::Arg::with_name) of the
-/// [`--range-start`/`-s`](Options::range_start) option which is used to
+/// [`--min`/`-a`](Options::min) option which is used to
 /// [get its value](clap::ArgMatches::value_of).
-const RANGE_START_OPT: &str = "RANGE_START";
+const MIN_OPT: &str = "MIN";
 /// [Internal name](clap::Arg::with_name) of the
-/// [`--range-end`/`-e`](Options::range_end) option which is used to
+/// [`--max`/`-b`](Options::max) option which is used to
 /// [get its value](clap::ArgMatches::value_of).
-const RANGE_END_OPT: &str = "RANGE_END";
+const MAX_OPT: &str = "MAX";
 /// [Internal name](clap::Arg::with_name) of the
 /// [`--order`/`-o`](Options::order) option which is used to
 /// [get its value](clap::ArgMatches::value_of).
@@ -28,9 +28,9 @@ pub struct Options {
   /// Instance of a sorting [algorithm](Algorithm) struct.
   pub algorithm: Box<dyn Algorithm + Send>,
   /// Min value in the [array](::array::Array).
-  pub range_start: u32,
+  pub min: u32,
   /// Max values in the [array](::array::Array).
-  pub range_end: u32,
+  pub max: u32,
   /// Order of elements in the [array](::array::Array).
   pub order: Order,
 }
@@ -55,15 +55,15 @@ pub fn parse_options() -> Options {
     .setting(AppSettings::NextLineHelp)
     .setting(AppSettings::ColoredHelp)
     .arg(
-      Arg::with_name(RANGE_START_OPT)
-        .short("s")
-        .long("range-start")
+      Arg::with_name(MIN_OPT)
+        .short("a")
+        .long("min")
         .help("Sets min value in the array")
         .default_value("1"),
     ).arg(
-      Arg::with_name(RANGE_END_OPT)
-        .short("e")
-        .long("range-end")
+      Arg::with_name(MAX_OPT)
+        .short("b")
+        .long("max")
         .help("Sets max value in the array")
         .default_value("100"),
     ).arg(
@@ -101,8 +101,8 @@ pub fn parse_options() -> Options {
       _ => unreachable!(),
     },
 
-    range_start: value_t_or_exit!(matches, RANGE_START_OPT, u32),
-    range_end: value_t_or_exit!(matches, RANGE_END_OPT, u32),
+    min: value_t_or_exit!(matches, MIN_OPT, u32),
+    max: value_t_or_exit!(matches, MAX_OPT, u32),
 
     order: match matches.value_of(ORDER_OPT).unwrap() {
       "sorted" => Order::Sorted,
