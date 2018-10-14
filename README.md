@@ -1,5 +1,7 @@
 # sort-visualization
 
+![contributors welcome](https://img.shields.io/badge/contributors-welcome-brightgreen.svg)
+
 A simple program to visualize sort algorithms written in [Rust](https://www.rust-lang.org/), using [Piston](http://www.piston.rs/) for graphics. Inspired by [**Hopson97/Sort-Algorithm-Visualiser**](https://github.com/Hopson97/Sort-Algorithm-Visualiser).
 
 [![Demo](https://i.imgur.com/jyPDiWX.gif)](https://gist.github.com/dmitmel/f8664421b547577065912c3246f4c1e9)
@@ -62,7 +64,7 @@ cargo doc --document-private-items --open
 
 ## Contribute
 
-PRs accepted.
+PRs are appreciated!
 
 ## License
 
