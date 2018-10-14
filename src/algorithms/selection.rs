@@ -23,7 +23,7 @@ impl Algorithm for SelectionSort {
           array.set_color(min_i, [0.0, 1.0, 0.0, 0.7]);
         }
 
-        array.wait(2);
+        array.wait(5);
       }
 
       array.wait(20);

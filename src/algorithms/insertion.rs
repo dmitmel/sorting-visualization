@@ -11,7 +11,7 @@ impl Algorithm for InsertionSort {
     let len = array.len();
     for i in 1..len {
       array.set_color(i, [0.0, 1.0, 0.0, 0.8]);
-      array.wait(5);
+      array.wait(7);
 
       let mut j = i;
       while j > 0 && array.get(j - 1) > array.get(j) {
@@ -19,7 +19,7 @@ impl Algorithm for InsertionSort {
         j -= 1;
 
         array.set_color(j, [0.0, 1.0, 0.0, 0.8]);
-        array.wait(5);
+        array.wait(7);
         array.reset_color(j);
       }
 
