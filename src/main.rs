@@ -1,3 +1,6 @@
+#![feature(external_doc)]
+#![doc(include = "../README.md")]
+
 #[macro_use]
 extern crate clap;
 
