@@ -1,6 +1,7 @@
 # sort-visualization
 
-![contributors welcome](https://img.shields.io/badge/contributors-welcome-brightgreen.svg)
+[![Travis (.org)](https://img.shields.io/travis/dmitmel/sort-visualization.svg?style=flat-square)](https://travis-ci.org/dmitmel/sort-visualization)
+[![contributors welcome](https://img.shields.io/badge/contributors-welcome-brightgreen.svg?style=flat-square)](https://github.com/dmitmel/sort-visualization/pulls)
 
 A simple program to visualize sort algorithms written in [Rust](https://www.rust-lang.org/), using [Piston](http://www.piston.rs/) for graphics. Inspired by [**Hopson97/Sort-Algorithm-Visualiser**](https://github.com/Hopson97/Sort-Algorithm-Visualiser).
 
