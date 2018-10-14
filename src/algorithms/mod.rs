@@ -1,4 +1,5 @@
-//! Different sorting algorithms as well as the general [`Algorithm`] trait.
+//! Different sorting algorithms as well as the general
+//! [`Algorithm`](::algorithms::Algorithm) trait.
 
 use array::Array;
 

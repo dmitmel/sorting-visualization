@@ -1,4 +1,4 @@
-//! The [`Array`] struct.
+//! The [`Array`](::array::Array) struct.
 
 use graphics::color;
 use graphics::types::Color;
