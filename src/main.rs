@@ -1,3 +1,6 @@
+#[macro_use]
+extern crate clap;
+
 extern crate rand;
 
 extern crate graphics;
@@ -14,10 +17,11 @@ use sdl2_window::Sdl2Window as Window;
 mod algorithms;
 mod app;
 mod array;
+mod cli;
 mod state;
 
-use algorithms::Algorithm;
 use app::App;
+use cli::{Options, Order};
 
 /// Required version of OpenGL.
 ///
@@ -30,7 +34,12 @@ const WINDOW_TITLE: &str = "Sort Visualization";
 const WINDOW_SIZE: (u32, u32) = (640, 480);
 
 fn main() {
-  let algorithm = algorithms::BubbleSort;
+  let Options {
+    algorithm,
+    range_start,
+    range_end,
+    order,
+  } = cli::get_options();
 
   let title = format!("{} - {}", WINDOW_TITLE, algorithm.name());
   let mut window: Window = WindowSettings::new(title, WINDOW_SIZE)
@@ -41,9 +50,16 @@ fn main() {
     .expect("couldn't create window");
   let mut gl = GlGraphics::new(OPENGL_VERSION);
 
-  let mut array: Vec<u32> = (1..=100).collect();
-  use rand::{thread_rng, Rng};
-  thread_rng().shuffle(&mut array);
+  let mut array: Vec<u32> = (range_start..=range_end).collect();
+
+  match order {
+    Order::Sorted => {}
+    Order::Reversed => array.reverse(),
+    Order::Shuffled => {
+      use rand::{thread_rng, Rng};
+      thread_rng().shuffle(&mut array);
+    }
+  }
 
   let mut app = App::init(algorithm, array);
 

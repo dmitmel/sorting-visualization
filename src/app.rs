@@ -38,10 +38,7 @@ impl App {
   /// Creates a new app (with a state constructed from the given `array`) and
   /// starts an algorithm thread. This function is called `init` instead of
   /// `new` because it has side effects.
-  pub fn init<A>(algorithm: A, array: Vec<u32>) -> Self
-  where
-    A: Algorithm + Send + 'static,
-  {
+  pub fn init(algorithm: Box<dyn Algorithm + Send>, array: Vec<u32>) -> Self {
     let colors = vec![graphics::color::TRANSPARENT; array.len()];
 
     let state = Arc::new(State {
