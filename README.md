@@ -3,7 +3,7 @@
 [![Travis (.org)](https://img.shields.io/travis/dmitmel/sort-visualization.svg?style=flat-square)](https://travis-ci.org/dmitmel/sort-visualization)
 [![contributors welcome](https://img.shields.io/badge/contributors-welcome-brightgreen.svg?style=flat-square)](https://github.com/dmitmel/sort-visualization/pulls)
 
-A simple program to visualize sort algorithms written in [Rust](https://www.rust-lang.org/), using [Piston](http://www.piston.rs/) for graphics. Inspired by [**Hopson97/Sort-Algorithm-Visualiser**](https://github.com/Hopson97/Sort-Algorithm-Visualiser).
+A [Rust](https://www.rust-lang.org/) program for visualizing sorting algorithms which uses [Piston](http://www.piston.rs/) for graphics. Inspired by [**Hopson97/Sort-Algorithm-Visualiser**](https://github.com/Hopson97/Sort-Algorithm-Visualiser).
 
 [![Demo](https://i.imgur.com/jyPDiWX.gif)](https://gist.github.com/dmitmel/f8664421b547577065912c3246f4c1e9)
 
