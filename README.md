@@ -24,8 +24,8 @@ You can use `cargo run` if you don't want to install the binary system-wide.
 ```bash
 # see 'Features' for the list of supported algorithms and their IDs
 sorting-visualization <algorithm>
-# set minimum and maximum values in the array
-sorting-visualization <algorithm> --min <number> --max <number>
+# set length of the array
+sorting-visualization <algorithm> --length <number>
 # set order of elements in the array
 sorting-visualization <algorithm> --order <sorted|reversed|shuffled>
 ```
