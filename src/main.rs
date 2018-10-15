@@ -32,7 +32,7 @@ use cli::{Options, Order};
 const OPENGL_VERSION: OpenGL = OpenGL::V3_2;
 
 /// Title of the main window.
-const WINDOW_TITLE: &str = "Sort Visualization";
+const WINDOW_TITLE: &str = "sorting-visualization";
 /// Initial size of the main window.
 const WINDOW_SIZE: (u32, u32) = (640, 480);
 

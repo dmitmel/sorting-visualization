@@ -1,7 +1,7 @@
-# sort-visualization
+# sorting-visualization
 
-[![Travis (.org)](https://img.shields.io/travis/dmitmel/sort-visualization.svg?style=flat-square)](https://travis-ci.org/dmitmel/sort-visualization)
-[![contributors welcome](https://img.shields.io/badge/contributors-welcome-brightgreen.svg?style=flat-square)](https://github.com/dmitmel/sort-visualization/pulls)
+[![Travis (.org)](https://img.shields.io/travis/dmitmel/sorting-visualization.svg?style=flat-square)](https://travis-ci.org/dmitmel/sorting-visualization)
+[![contributors welcome](https://img.shields.io/badge/contributors-welcome-brightgreen.svg?style=flat-square)](https://github.com/dmitmel/sorting-visualization/pulls)
 
 A [Rust](https://www.rust-lang.org/) program for visualizing sorting algorithms which uses [Piston](http://www.piston.rs/) for graphics. Inspired by [**Hopson97/Sort-Algorithm-Visualiser**](https://github.com/Hopson97/Sort-Algorithm-Visualiser).
 
@@ -10,8 +10,8 @@ A [Rust](https://www.rust-lang.org/) program for visualizing sorting algorithms 
 ## Installation
 
 ```bash
-git clone https://github.com/dmitmel/sort-visualization
-cd sort-visualization
+git clone https://github.com/dmitmel/sorting-visualization
+cd sorting-visualization
 cargo install
 ```
 
@@ -23,11 +23,11 @@ You can use `cargo run` if you don't want to install the binary system-wide.
 
 ```bash
 # see 'Features' for the list of supported algorithms and their IDs
-sort-visualization <algorithm>
+sorting-visualization <algorithm>
 # set minimum and maximum values in the array
-sort-visualization <algorithm> --min <number> --max <number>
+sorting-visualization <algorithm> --min <number> --max <number>
 # set order of elements in the array
-sort-visualization <algorithm> --order <sorted|reversed|shuffled>
+sorting-visualization <algorithm> --order <sorted|reversed|shuffled>
 ```
 
 ## Features
@@ -69,4 +69,4 @@ PRs are appreciated!
 
 ## License
 
-[MIT](https://github.com/dmitmel/sort-visualization/blob/master/LICENSE) © [Dmytro Meleshko](https://github.com/dmitmel)
+[MIT](https://github.com/dmitmel/sorting-visualization/blob/master/LICENSE) © [Dmytro Meleshko](https://github.com/dmitmel)

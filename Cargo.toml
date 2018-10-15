@@ -1,12 +1,12 @@
 [package]
 publish = false
-name = "sort-visualization"
+name = "sorting-visualization"
 version = "0.1.0"
 authors = ["Dmytro Meleshko <dmytro.meleshko@gmail.com>"]
 description = "A Rust program for visualizing sorting algorithms which uses Piston for graphics. Inspired by Hopson97/Sort-Algorithm-Visualiser."
 license = "MIT"
-repository = "https://github.com/dmitmel/sort-visualization.git"
-homepage = "https://github.com/dmitmel/sort-visualization"
+repository = "https://github.com/dmitmel/sorting-visualization.git"
+homepage = "https://github.com/dmitmel/sorting-visualization"
 readme = "README.md"
 
 [dependencies]
