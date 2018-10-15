@@ -25,6 +25,6 @@ impl Algorithm for GnomeSort {
   }
 
   fn name(&self) -> &'static str {
-    "Gnome Sort"
+    "Gnome sort"
   }
 }

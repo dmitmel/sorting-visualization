@@ -35,6 +35,6 @@ impl Algorithm for SelectionSort {
   }
 
   fn name(&self) -> &'static str {
-    "Selection Sort"
+    "Selection sort"
   }
 }

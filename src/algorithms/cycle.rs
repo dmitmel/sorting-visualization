@@ -51,7 +51,7 @@ impl Algorithm for CycleSort {
   }
 
   fn name(&self) -> &'static str {
-    "Cycle Sort"
+    "Cycle sort"
   }
 }
 
