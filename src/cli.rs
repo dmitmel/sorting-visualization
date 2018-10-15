@@ -11,13 +11,9 @@ use algorithms::Algorithm;
 /// [get its value](clap::ArgMatches::value_of).
 const ALGORITHM_ARG: &str = "ALGORITHM";
 /// [Internal name](clap::Arg::with_name) of the
-/// [`--min`/`-a`](Options::min) option which is used to
+/// [`--length`/`-l`](Options::length) option which is used to
 /// [get its value](clap::ArgMatches::value_of).
-const MIN_OPT: &str = "MIN";
-/// [Internal name](clap::Arg::with_name) of the
-/// [`--max`/`-b`](Options::max) option which is used to
-/// [get its value](clap::ArgMatches::value_of).
-const MAX_OPT: &str = "MAX";
+const LENGTH_OPT: &str = "LENGTH";
 /// [Internal name](clap::Arg::with_name) of the
 /// [`--order`/`-o`](Options::order) option which is used to
 /// [get its value](clap::ArgMatches::value_of).
@@ -27,10 +23,8 @@ const ORDER_OPT: &str = "ORDER";
 pub struct Options {
   /// Instance of a sorting [algorithm](Algorithm) struct.
   pub algorithm: Box<dyn Algorithm + Send>,
-  /// Min value in the [array](::array::Array).
-  pub min: u32,
-  /// Max values in the [array](::array::Array).
-  pub max: u32,
+  /// Number of elements in the [array](::array::Array).
+  pub length: u32,
   /// Order of elements in the [array](::array::Array).
   pub order: Order,
 }
@@ -55,18 +49,13 @@ pub fn parse_options() -> Options {
     .setting(AppSettings::NextLineHelp)
     .setting(AppSettings::ColoredHelp)
     .arg(
-      Arg::with_name(MIN_OPT)
-        .short("a")
-        .long("min")
-        .help("Sets min value in the array")
-        .default_value("1"),
-    ).arg(
-      Arg::with_name(MAX_OPT)
-        .short("b")
-        .long("max")
-        .help("Sets max value in the array")
+      Arg::with_name(LENGTH_OPT)
+        .short("l")
+        .long("length")
+        .help("Sets number of elements in the array")
         .default_value("100"),
-    ).arg(
+    )
+    .arg(
       Arg::with_name(ORDER_OPT)
         .short("o")
         .long("order")
@@ -74,7 +63,8 @@ pub fn parse_options() -> Options {
         .possible_values(&["sorted", "reversed", "shuffled"])
         .case_insensitive(true)
         .default_value("shuffled"),
-    ).arg(
+    )
+    .arg(
       Arg::with_name(ALGORITHM_ARG)
         .help("Sets sorting algorithm")
         .possible_values(&[
@@ -84,7 +74,8 @@ pub fn parse_options() -> Options {
           "insertion",
           "quicksort",
           "selection",
-        ]).case_insensitive(true)
+        ])
+        .case_insensitive(true)
         .required(true),
     );
 
@@ -101,8 +92,7 @@ pub fn parse_options() -> Options {
       _ => unreachable!(),
     },
 
-    min: value_t_or_exit!(matches, MIN_OPT, u32),
-    max: value_t_or_exit!(matches, MAX_OPT, u32),
+    length: value_t_or_exit!(matches, LENGTH_OPT, u32),
 
     order: match matches.value_of(ORDER_OPT).unwrap() {
       "sorted" => Order::Sorted,

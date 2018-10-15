@@ -61,7 +61,8 @@ impl App {
         let array = Array::new(algorithm_state);
         array.wait(500);
         algorithm.sort(array);
-      }).unwrap();
+      })
+      .unwrap();
 
     App(state)
   }
@@ -153,7 +154,7 @@ impl App {
     let state_was_updated = match (args.button, args.state) {
       (Keyboard(Key::Space), Press) => {
         anim.paused = !anim.paused;
-        // tell the algorithm thread that the state was updated
+        // tell the algorithm thread that the state has been updated
         self.0.pause_notifier.notify_all();
         true
       }

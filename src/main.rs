@@ -39,8 +39,7 @@ const WINDOW_SIZE: (u32, u32) = (640, 480);
 fn main() {
   let Options {
     algorithm,
-    min,
-    max,
+    length,
     order,
   } = cli::parse_options();
 
@@ -53,7 +52,7 @@ fn main() {
     .expect("couldn't create window");
   let mut gl = GlGraphics::new(OPENGL_VERSION);
 
-  let mut array: Vec<u32> = (min..=max).collect();
+  let mut array: Vec<u32> = (1..=length).collect();
 
   match order {
     Order::Sorted => {}
