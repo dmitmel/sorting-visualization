@@ -51,8 +51,10 @@ sorting-visualization <algorithm> --order <sorted|reversed|shuffled>
 ## Building docs
 
 ```bash
-cargo doc --document-private-items --open
+cargo +nightly doc --document-private-items --open
 ```
+
+Nightly Rust is required for building docs because the `--document-private-items` is currently unstable. This option is very useful when developing an application (not library) because you would probably like to see the documentation of the whole codebase.
 
 ## TODO
 
