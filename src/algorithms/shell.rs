@@ -3,7 +3,7 @@
 use algorithms::Algorithm;
 use array::Array;
 
-/// [Bubble sort](https://en.wikipedia.org/wiki/Bubble_sort)
+/// [Shell sort](https://en.wikipedia.org/wiki/Shellsort)
 pub struct Shellsort;
 
 impl Algorithm for Shellsort {
