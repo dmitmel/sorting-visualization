@@ -74,6 +74,7 @@ pub fn parse_options() -> Options {
           "insertion",
           "quicksort",
           "selection",
+          "shell",
         ])
         .case_insensitive(true)
         .required(true),
@@ -89,6 +90,7 @@ pub fn parse_options() -> Options {
       "insertion" => Box::new(algorithms::InsertionSort),
       "quicksort" => Box::new(algorithms::Quicksort),
       "selection" => Box::new(algorithms::SelectionSort),
+      "shell" => Box::new(algorithms::Shellsort),
       _ => unreachable!(),
     },
 
