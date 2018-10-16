@@ -18,15 +18,21 @@ const LENGTH_OPT: &str = "LENGTH";
 /// [`--order`/`-o`](Options::order) option which is used to
 /// [get its value](clap::ArgMatches::value_of).
 const ORDER_OPT: &str = "ORDER";
+/// [Internal name](clap::Arg::with_name) of the
+/// [`--speed`/`-s`](Options::speed) option which is used to
+/// [get its value](clap::ArgMatches::value_of).
+const SPEED_OPT: &str = "SPEED";
 
 /// Contains all options that can be provided by a user using the CLI.
 pub struct Options {
   /// Instance of a sorting [algorithm](Algorithm) struct.
-  pub algorithm: Box<dyn Algorithm + Send>,
+  pub algorithm: Box<Algorithm + Send>,
   /// Number of elements in the [array](::array::Array).
   pub length: u32,
   /// Order of elements in the [array](::array::Array).
   pub order: Order,
+  /// [Speed](::state::State::speed) factor
+  pub speed: f64,
 }
 
 /// Order of elements in the [array](::array::Array).
@@ -77,6 +83,13 @@ pub fn parse_options() -> Options {
         ])
         .case_insensitive(true)
         .required(true),
+    )
+    .arg(
+      Arg::with_name(SPEED_OPT)
+        .short("s")
+        .long("speed")
+        .help("Sets animation speed")
+        .default_value("1.0"),
     );
 
   let matches = parser.get_matches();
@@ -100,5 +113,7 @@ pub fn parse_options() -> Options {
       "shuffled" => Order::Shuffled,
       _ => unreachable!(),
     },
+
+    speed: value_t_or_exit!(matches, SPEED_OPT, f64),
   }
 }

@@ -38,6 +38,7 @@ fn main() {
     algorithm,
     length,
     order,
+    speed,
   } = cli::parse_options();
 
   let title = format!("{} - {}", WINDOW_TITLE, algorithm.name());
@@ -60,7 +61,7 @@ fn main() {
     }
   }
 
-  let mut app = App::init(algorithm, array);
+  let mut app = App::init(algorithm, array, speed);
 
   println!("Press [Space] to pause/resume the animation");
   println!("Press [Up]    to speed up the animation");
