@@ -31,7 +31,7 @@ pub struct Options {
   pub length: u32,
   /// Order of elements in the [array](::array::Array).
   pub order: Order,
-  /// [Speed](::state::State::speed) factor
+  /// [Speed](::state::AnimationState::speed) factor.
   pub speed: f64,
 }
 
