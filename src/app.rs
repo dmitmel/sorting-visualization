@@ -38,13 +38,17 @@ impl App {
   /// Creates a new app (with a state constructed from the given `array`) and
   /// starts an algorithm thread. This function is called `init` instead of
   /// `new` because it has side effects.
-  pub fn init(algorithm: Box<dyn Algorithm + Send>, array: Vec<u32>) -> Self {
+  pub fn init(
+    algorithm: Box<dyn Algorithm + Send>,
+    array: Vec<u32>,
+    speed: f64,
+  ) -> Self {
     let colors = vec![graphics::color::TRANSPARENT; array.len()];
 
     let state = Arc::new(State {
       animation: Mutex::new(AnimationState {
         time: 0.0,
-        speed: 1.0,
+        speed,
         paused: true,
         array,
         colors,
