@@ -39,7 +39,7 @@ impl App {
   /// starts an algorithm thread. This function is called `init` instead of
   /// `new` because it has side effects.
   pub fn init(
-    algorithm: Box<Algorithm + Send>,
+    algorithm: Box<dyn Algorithm + Send>,
     array: Vec<u32>,
     speed: f64,
   ) -> Self {

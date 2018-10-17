@@ -26,7 +26,7 @@ const SPEED_OPT: &str = "SPEED";
 /// Contains all options that can be provided by a user using the CLI.
 pub struct Options {
   /// Instance of a sorting [algorithm](Algorithm) struct.
-  pub algorithm: Box<Algorithm + Send>,
+  pub algorithm: Box<dyn Algorithm + Send>,
   /// Number of elements in the [array](::array::Array).
   pub length: u32,
   /// Order of elements in the [array](::array::Array).
