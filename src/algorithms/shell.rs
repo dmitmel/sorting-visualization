@@ -13,7 +13,7 @@ impl Algorithm for Shellsort {
     let mut gap = 1;
 
     while gap < (len >> 1) {
-        gap = (gap << 1) + 1;
+      gap = (gap << 1) + 1;
     }
 
     while gap >= 1 {
@@ -21,7 +21,7 @@ impl Algorithm for Shellsort {
       while i < len {
         let mut k = i - gap;
         let mut j = i;
-        while (j >= gap) && (array.get(j as usize) < array.get(k as usize)) {
+        while j >= gap && array.get(j as usize) < array.get(k as usize) {
           array.swap(j as usize, k as usize);
           array.wait(10);
           j = k;
