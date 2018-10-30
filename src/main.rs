@@ -41,8 +41,8 @@ fn main() {
     speed,
   } = cli::parse_options();
 
-  let title = format!("{} - {}", WINDOW_TITLE, algorithm.name());
-  let mut window: Window = WindowSettings::new(title, WINDOW_SIZE)
+  let window_title = format!("{} - {}", WINDOW_TITLE, algorithm.name());
+  let mut window: Window = WindowSettings::new(window_title, WINDOW_SIZE)
     .opengl(OPENGL_VERSION)
     .exit_on_esc(true)
     .vsync(true)
