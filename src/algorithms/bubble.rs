@@ -26,7 +26,7 @@ impl Algorithm for BubbleSort {
     }
   }
 
-  fn name(&self) -> &'static str {
-    "Bubble sort"
+  fn name(&self) -> String {
+    "Bubble sort".to_string()
   }
 }

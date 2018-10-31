@@ -50,8 +50,8 @@ impl Algorithm for CycleSort {
     }
   }
 
-  fn name(&self) -> &'static str {
-    "Cycle sort"
+  fn name(&self) -> String {
+    "Cycle sort".to_string()
   }
 }
 

@@ -11,12 +11,13 @@ impl Algorithm for Quicksort {
     self.sort_slice(&array, 0, array.len() as isize - 1);
   }
 
-  fn name(&self) -> &'static str {
-    "Quicksort"
+  fn name(&self) -> String {
+    "Quicksort".to_string()
   }
 }
 
 impl Quicksort {
+  #[allow(range_minus_one)]
   fn sort_slice(&self, array: &Array, low: isize, high: isize) {
     if low < high {
       let pivot = self.partition(array, low, high);

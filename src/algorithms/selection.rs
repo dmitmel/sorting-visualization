@@ -34,7 +34,7 @@ impl Algorithm for SelectionSort {
     }
   }
 
-  fn name(&self) -> &'static str {
-    "Selection sort"
+  fn name(&self) -> String {
+    "Selection sort".to_string()
   }
 }

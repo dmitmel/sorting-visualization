@@ -34,7 +34,7 @@ impl Algorithm for Shellsort {
     }
   }
 
-  fn name(&self) -> &'static str {
-    "Shell sort"
+  fn name(&self) -> String {
+    "Shell sort".to_string()
   }
 }

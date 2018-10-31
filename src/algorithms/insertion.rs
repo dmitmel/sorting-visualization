@@ -27,7 +27,7 @@ impl Algorithm for InsertionSort {
     }
   }
 
-  fn name(&self) -> &'static str {
-    "Insertion sort"
+  fn name(&self) -> String {
+    "Insertion sort".to_string()
   }
 }

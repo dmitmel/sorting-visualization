@@ -9,11 +9,12 @@ pub trait Algorithm {
   /// called "algorithm thread".
   fn sort(&self, array: Array);
   /// Returns the name of the algorithm that will be displayed to the user.
-  fn name(&self) -> &'static str;
+  /// Returned value is an owned [String] so it can be generated at runtime.
+  fn name(&self) -> String;
 }
 
-/// A macro for declaring some modules and then re-exporting all contents of
-/// those modules.
+/// A shorthand macro for declaring some modules and then re-exporting al
+/// contents of those modules.
 macro_rules! reexport {
   ($($name:ident),*) => ($(
     pub mod $name;

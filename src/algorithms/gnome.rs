@@ -24,7 +24,7 @@ impl Algorithm for GnomeSort {
     }
   }
 
-  fn name(&self) -> &'static str {
-    "Gnome sort"
+  fn name(&self) -> String {
+    "Gnome sort".to_string()
   }
 }
