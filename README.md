@@ -1,7 +1,8 @@
 # sorting-visualization
 
-[![Travis (.org)](https://img.shields.io/travis/dmitmel/sorting-visualization.svg?style=flat-square)](https://travis-ci.org/dmitmel/sorting-visualization)
-[![contributors welcome](https://img.shields.io/badge/contributors-welcome-brightgreen.svg?style=flat-square)](https://github.com/dmitmel/sorting-visualization/pulls)
+[![Travis CI](https://img.shields.io/travis/dmitmel/sorting-visualization.svg?style=flat-square)](https://travis-ci.org/dmitmel/sorting-visualization)
+[![docs: GH pages](https://img.shields.io/badge/docs-GH%20pages-blue.svg?style=flat-square)](https://dmitmel.github.io/sorting-visualization)
+[![contributors: welcome](https://img.shields.io/badge/contributors-welcome-brightgreen.svg?style=flat-square)](https://github.com/dmitmel/sorting-visualization/pulls)
 
 A [Rust](https://www.rust-lang.org/) program for visualizing sorting algorithms which uses [Piston](http://www.piston.rs/) for graphics. Inspired by [**Hopson97/Sort-Algorithm-Visualiser**](https://github.com/Hopson97/Sort-Algorithm-Visualiser).
 
@@ -54,7 +55,7 @@ sorting-visualization <algorithm> --order <sorted|reversed|shuffled>
 cargo +nightly doc --document-private-items --open
 ```
 
-Nightly Rust is required for building docs because the `--document-private-items` is currently unstable. This option is very useful when developing an application (not library) because you would probably like to see the documentation of the whole codebase.
+Nightly Rust is required for building docs because the `--document-private-items` is currently unstable. This option is very useful when developing an application (not library) because you would probably like to see the documentation of the entire codebase.
 
 ## TODO
 
@@ -65,7 +66,9 @@ Nightly Rust is required for building docs because the `--document-private-items
 5. More algorithms
 6. Sound?
 
-## Contribute
+## Contributing
+
+[**Documentation**](https://dmitmel.github.io/sorting-visualization)
 
 PRs are appreciated!
 
