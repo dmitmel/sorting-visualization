@@ -60,7 +60,8 @@ pub fn parse_options() -> Options {
         .long("length")
         .help("Sets number of elements in the array")
         .default_value("100"),
-    ).arg(
+    )
+    .arg(
       Arg::with_name(ORDER_OPT)
         .short("o")
         .long("order")
@@ -68,7 +69,8 @@ pub fn parse_options() -> Options {
         .possible_values(&["sorted", "reversed", "shuffled"])
         .case_insensitive(true)
         .default_value("shuffled"),
-    ).arg(
+    )
+    .arg(
       Arg::with_name(ALGORITHM_ARG)
         .help("Sets sorting algorithm")
         .possible_values(&[
@@ -79,9 +81,11 @@ pub fn parse_options() -> Options {
           "quicksort",
           "selection",
           "shell",
-        ]).case_insensitive(true)
+        ])
+        .case_insensitive(true)
         .required(true),
-    ).arg(
+    )
+    .arg(
       Arg::with_name(SPEED_OPT)
         .short("s")
         .long("speed")

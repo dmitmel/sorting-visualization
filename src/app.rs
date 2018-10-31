@@ -65,7 +65,8 @@ impl App {
         let array = Array::new(algorithm_state);
         array.wait(500);
         algorithm.sort(array);
-      }).unwrap();
+      })
+      .unwrap();
 
     App(state)
   }
