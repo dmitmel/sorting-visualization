@@ -61,6 +61,13 @@ fn main() {
     }
   }
 
+  let font = include_bytes!("../assets/Menlo-Regular.ttf");
+  let mut glyphs = GlyphCache::from_bytes(font, (), TextureSettings::new())
+    .expect("couldn't load font");
+  glyphs
+    .preload_printable_ascii(app::STATUS_TEXT_FONT_SIZE)
+    .expect("couldn't preload printable ASCII chars");
+
   let mut app = App::init(algorithm, array, speed);
 
   println!("Press [Space] to pause/resume the animation");
@@ -71,7 +78,7 @@ fn main() {
   let mut events = Events::new(EventSettings::new());
   while let Some(event) = events.next(&mut window) {
     match event {
-      Event::Loop(Loop::Render(args)) => app.render(&mut gl, args),
+      Event::Loop(Loop::Render(args)) => app.render(args, &mut gl, &mut glyphs),
       Event::Loop(Loop::Update(args)) => app.update(args),
       Event::Input(Input::Button(args)) => app.button(args),
       _ => {}

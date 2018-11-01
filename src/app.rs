@@ -1,8 +1,8 @@
 //! The [`App`] struct and some constants.
 
-use graphics;
+use graphics::color::{BLACK, TRANSPARENT, WHITE};
 use graphics::types::Color;
-use opengl_graphics::GlGraphics;
+use opengl_graphics::{GlGraphics, GlyphCache};
 use piston::input::*;
 
 use std::sync::{Arc, Condvar, Mutex};
@@ -14,10 +14,10 @@ use array::Array;
 use state::*;
 
 /// Color that is used to clear the window before [drawing](App::render).
-const BACKGROUND_COLOR: Color = graphics::color::BLACK;
+const BACKGROUND_COLOR: Color = BLACK;
 
 /// Color of rectangles that represent the array values.
-const VALUE_COLOR: Color = graphics::color::WHITE;
+const VALUE_COLOR: Color = WHITE;
 
 /// Color of the values that were recently accessed.
 ///
@@ -28,6 +28,11 @@ const ACCESSSED_VALUE_COLOR: Color = [1.0, 0.0, 0.0, 1.0];
 ///
 /// _See_ [`AnimationState.array_accesses`](AnimationState::array_accesses)
 const ACCESSED_VALUE_TIMEOUT: f64 = 0.25;
+
+/// Font size of the status text in pixels.
+pub const STATUS_TEXT_FONT_SIZE: u32 = 16;
+/// Margins between the status text and window borders.
+const STATUS_TEXT_MARGIN: f64 = 8.0;
 
 /// This struct contains all [rendering](App::render), [updating](App::update)
 /// and [input handling](App::button) logic.
@@ -43,7 +48,7 @@ impl App {
     array: Vec<u32>,
     speed: f64,
   ) -> Self {
-    let colors = vec![graphics::color::TRANSPARENT; array.len()];
+    let colors = vec![TRANSPARENT; array.len()];
 
     let state = Arc::new(State {
       animation: Mutex::new(AnimationState {
@@ -72,16 +77,40 @@ impl App {
   }
 
   /// Draws the current [animation state](AnimationState).
-  pub fn render(&mut self, gl: &mut GlGraphics, args: RenderArgs) {
-    let window_w = f64::from(args.width);
-    let window_h = f64::from(args.height);
-
+  pub fn render(
+    &mut self,
+    args: RenderArgs,
+    gl: &mut GlGraphics,
+    glyphs: &mut GlyphCache<'_>,
+  ) {
     gl.draw(args.viewport(), |ctx, gl| {
-      graphics::clear(BACKGROUND_COLOR, gl);
+      use graphics::*;
+
+      clear(BACKGROUND_COLOR, gl);
 
       // lock the animation state for the whole rendering cycle so that
       // algorithm thread doesn't change something while rendering
       let anim = self.0.animation();
+
+      // transform of the bottom left point of the status text
+      let status_text_transform = ctx.transform.trans(
+        STATUS_TEXT_MARGIN,
+        STATUS_TEXT_MARGIN + f64::from(STATUS_TEXT_FONT_SIZE),
+      );
+
+      let status_text =
+        format!("paused = {}, speed = {}%", anim.paused, anim.speed * 100.0);
+
+      // draw the status text
+      text::Text::new_color(WHITE, STATUS_TEXT_FONT_SIZE)
+        .draw(
+          &status_text,
+          glyphs,
+          &ctx.draw_state,
+          status_text_transform,
+          gl,
+        )
+        .unwrap();
 
       let len = anim.array.len();
       let max_value = *anim.array.iter().max().unwrap_or(&0);
@@ -91,12 +120,20 @@ impl App {
       let mut draw_value = |index: usize, color: Color| {
         let value = anim.array[index];
 
+        let window_w = f64::from(args.width);
+        let window_h = f64::from(args.height);
+
+        let array_y =
+          STATUS_TEXT_MARGIN * 2.0 + f64::from(STATUS_TEXT_FONT_SIZE);
+
+        let array_h = window_h - array_y;
+
         let w = window_w / (len as f64);
-        let h = f64::from(value) * window_h / f64::from(max_value);
+        let h = f64::from(value) * array_h / f64::from(max_value);
         let x = (index as f64) * w;
         let y = window_h - h;
 
-        graphics::rectangle(color, [x, y, w, h], ctx.transform, gl);
+        rectangle(color, [x, y, w, h], ctx.transform, gl);
       };
 
       // draw all values
@@ -155,29 +192,17 @@ impl App {
     use Button::Keyboard;
     use ButtonState::Press;
 
-    let state_was_updated: bool = match (args.button, args.state) {
+    match (args.button, args.state) {
       (Keyboard(Key::Space), Press) => {
         anim.paused = !anim.paused;
         // tell the algorithm thread that the state has been updated
         self.0.pause_notifier.notify_all();
-        true
       }
 
-      (Keyboard(Key::Up), Press) => {
-        anim.speed *= 2.0;
-        true
-      }
+      (Keyboard(Key::Up), Press) => anim.speed *= 2.0,
+      (Keyboard(Key::Down), Press) => anim.speed /= 2.0,
 
-      (Keyboard(Key::Down), Press) => {
-        anim.speed /= 2.0;
-        true
-      }
-
-      _ => false,
+      _ => {}
     };
-
-    if state_was_updated {
-      println!("paused = {}, speed = {}", anim.paused, anim.speed);
-    }
   }
 }

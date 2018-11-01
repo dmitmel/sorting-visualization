@@ -60,11 +60,10 @@ Nightly Rust is required for building docs because the `--document-private-items
 ## TODO
 
 1. Ask someone to proof-read the code
-2. Draw the animation state as text in the window instead of printing it to the console
-3. Add a CLI option to list available algorithms
-4. User-friendly GUI
-5. More algorithms
-6. Sound?
+2. Add a CLI option to list available algorithms
+3. User-friendly GUI
+4. More algorithms
+5. Sound?
 
 ## Contributing
 
