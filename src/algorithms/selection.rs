@@ -1,7 +1,6 @@
 //! [Selection sort](https://en.wikipedia.org/wiki/Selection_sort)
 
-use algorithms::Algorithm;
-use array::Array;
+use super::{Algorithm, Array};
 
 /// [Selection sort](https://en.wikipedia.org/wiki/Selection_sort)
 pub struct SelectionSort;

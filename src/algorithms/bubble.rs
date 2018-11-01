@@ -1,7 +1,6 @@
 //! [Bubble sort](https://en.wikipedia.org/wiki/Bubble_sort)
 
-use algorithms::Algorithm;
-use array::Array;
+use super::{Algorithm, Array};
 
 /// [Bubble sort](https://en.wikipedia.org/wiki/Bubble_sort)
 pub struct BubbleSort;

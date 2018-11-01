@@ -1,10 +1,8 @@
 //! Command-line interface and command-line argument parsing. Uses [clap] under
 //! the hood.
 
-use clap::{AppSettings, Arg};
-
-use algorithms;
-use algorithms::Algorithm;
+use crate::algorithms;
+use crate::algorithms::Algorithm;
 
 /// [Internal name](clap::Arg::with_name) of the
 /// [algorithm](Options::algorithm) argument which is used to
@@ -27,21 +25,21 @@ const SPEED_OPT: &str = "SPEED";
 pub struct Options {
   /// Instance of a sorting [algorithm](Algorithm) struct.
   pub algorithm: Box<dyn Algorithm + Send>,
-  /// Number of elements in the [array](::array::Array).
+  /// Number of elements in the [array](crate::array::Array).
   pub length: u32,
-  /// Order of elements in the [array](::array::Array).
+  /// Order of elements in the [array](crate::array::Array).
   pub order: Order,
-  /// [Speed](::state::AnimationState::speed) factor.
+  /// [Speed](crate::state::AnimationState::speed) factor.
   pub speed: f64,
 }
 
-/// Order of elements in the [array](::array::Array).
+/// Order of elements in the [array](crate::array::Array).
 pub enum Order {
   /// Sorted in the ascending order.
   Sorted,
   /// Sorted in the descending order.
   Reversed,
-  /// [Shuffled](::rand::Rng::shuffle).
+  /// [Shuffled](rand::Rng::shuffle).
   Shuffled,
 }
 
@@ -51,6 +49,8 @@ pub enum Order {
 ///
 /// _See_ [`clap::App.get_matches`](clap::App::get_matches)
 pub fn parse_options() -> Options {
+  use clap::*;
+
   let parser = app_from_crate!()
     .setting(AppSettings::NextLineHelp)
     .setting(AppSettings::ColoredHelp)

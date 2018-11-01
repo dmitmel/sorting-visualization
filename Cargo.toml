@@ -1,5 +1,6 @@
 [package]
 publish = false
+edition = "2018"
 name = "sorting-visualization"
 version = "0.1.0"
 authors = ["Dmytro Meleshko <dmytro.meleshko@gmail.com>"]

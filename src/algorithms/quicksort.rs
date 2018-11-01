@@ -1,7 +1,6 @@
 //! [Quicksort](https://en.wikipedia.org/wiki/Quicksort)
 
-use algorithms::Algorithm;
-use array::Array;
+use super::{Algorithm, Array};
 
 /// [Quicksort](https://en.wikipedia.org/wiki/Quicksort)
 pub struct Quicksort;
@@ -17,7 +16,7 @@ impl Algorithm for Quicksort {
 }
 
 impl Quicksort {
-  #[allow(range_minus_one)]
+  #[allow(clippy::range_minus_one)]
   fn sort_slice(&self, array: &Array, low: isize, high: isize) {
     if low < high {
       let pivot = self.partition(array, low, high);

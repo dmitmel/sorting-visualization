@@ -8,31 +8,31 @@ use piston::input::*;
 use std::sync::{Arc, Condvar, Mutex};
 use std::thread;
 
-use algorithms::Algorithm;
-use array::Array;
+use crate::algorithms::Algorithm;
+use crate::array::Array;
 
-use state::*;
+use crate::state::*;
 
 /// Color that is used to clear the window before [drawing](App::render).
-const BACKGROUND_COLOR: Color = BLACK;
+pub const BACKGROUND_COLOR: Color = BLACK;
 
 /// Color of rectangles that represent the array values.
-const VALUE_COLOR: Color = WHITE;
+pub const VALUE_COLOR: Color = WHITE;
 
 /// Color of the values that were recently accessed.
 ///
 /// _See_ [`AnimationState.array_accesses`](AnimationState::array_accesses)
-const ACCESSSED_VALUE_COLOR: Color = [1.0, 0.0, 0.0, 1.0];
+pub const ACCESSSED_VALUE_COLOR: Color = [1.0, 0.0, 0.0, 1.0];
 
 /// Time in seconds after which array accesses get removed.
 ///
 /// _See_ [`AnimationState.array_accesses`](AnimationState::array_accesses)
-const ACCESSED_VALUE_TIMEOUT: f64 = 0.25;
+pub const ACCESSED_VALUE_TIMEOUT: f64 = 0.25;
 
 /// Font size of the status text in pixels.
 pub const STATUS_TEXT_FONT_SIZE: u32 = 16;
 /// Margins between the status text and window borders.
-const STATUS_TEXT_MARGIN: f64 = 8.0;
+pub const STATUS_TEXT_MARGIN: f64 = 8.0;
 
 /// This struct contains all [rendering](App::render), [updating](App::update)
 /// and [input handling](App::button) logic.
@@ -189,8 +189,8 @@ impl App {
     let mut anim = self.0.animation();
 
     // import commonly used enum values in the current scope
-    use Button::Keyboard;
-    use ButtonState::Press;
+    use self::Button::Keyboard;
+    use self::ButtonState::Press;
 
     match (args.button, args.state) {
       (Keyboard(Key::Space), Press) => {

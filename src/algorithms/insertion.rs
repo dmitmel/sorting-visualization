@@ -1,7 +1,6 @@
 //! [Insertion sort](https://en.wikipedia.org/wiki/Insertion_sort)
 
-use algorithms::Algorithm;
-use array::Array;
+use super::{Algorithm, Array};
 
 /// [Insertion sort](https://en.wikipedia.org/wiki/Insertion_sort)
 pub struct InsertionSort;

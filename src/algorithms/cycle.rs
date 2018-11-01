@@ -1,7 +1,6 @@
 //! [Cycle sort](https://en.wikipedia.org/wiki/Cycle_sort)
 
-use algorithms::Algorithm;
-use array::Array;
+use super::{Algorithm, Array};
 
 /// [Cycle sort](https://en.wikipedia.org/wiki/Cycle_sort)
 pub struct CycleSort;

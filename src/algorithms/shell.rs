@@ -1,7 +1,6 @@
 //! [Shell sort](https://en.wikipedia.org/wiki/Shellsort)
 
-use algorithms::Algorithm;
-use array::Array;
+use super::{Algorithm, Array};
 
 /// [Shell sort](https://en.wikipedia.org/wiki/Shellsort)
 pub struct Shellsort;

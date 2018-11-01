@@ -1,13 +1,3 @@
-#[macro_use]
-extern crate clap;
-
-extern crate rand;
-
-extern crate graphics;
-extern crate opengl_graphics;
-extern crate piston;
-extern crate sdl2_window;
-
 use opengl_graphics::*;
 use piston::event_loop::*;
 use piston::input::*;
@@ -20,8 +10,8 @@ mod array;
 mod cli;
 mod state;
 
-use app::App;
-use cli::{Options, Order};
+use crate::app::App;
+use crate::cli::{Options, Order};
 
 /// Required version of OpenGL.
 ///
@@ -29,7 +19,7 @@ use cli::{Options, Order};
 const OPENGL_VERSION: OpenGL = OpenGL::V3_2;
 
 /// Title of the main window.
-const WINDOW_TITLE: &str = crate_name!();
+const WINDOW_TITLE: &str = clap::crate_name!();
 /// Initial size of the main window.
 const WINDOW_SIZE: (u32, u32) = (640, 480);
 
@@ -61,9 +51,11 @@ fn main() {
     }
   }
 
+  // load font for the status text
   let font = include_bytes!("../assets/Menlo-Regular.ttf");
   let mut glyphs = GlyphCache::from_bytes(font, (), TextureSettings::new())
     .expect("couldn't load font");
+  // preload printable ASCII chars for faster rendering
   glyphs
     .preload_printable_ascii(app::STATUS_TEXT_FONT_SIZE)
     .expect("couldn't preload printable ASCII chars");

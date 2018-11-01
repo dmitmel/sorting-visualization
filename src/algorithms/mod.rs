@@ -1,11 +1,12 @@
 //! Different sorting algorithms as well as the general
-//! [`Algorithm`](::algorithms::Algorithm) trait.
+//! [`Algorithm`](crate::algorithms::Algorithm) trait.
 
-use array::Array;
+// re-export Array struct for use in algorithms
+pub use crate::array::Array;
 
 /// The general trait for all sorting algorithms.
 pub trait Algorithm {
-  /// Sorts a given [array](::array::Array). This method is called in a so
+  /// Sorts a given [array](crate::array::Array). This method is called in a so
   /// called "algorithm thread".
   fn sort(&self, array: Array);
   /// Returns the name of the algorithm that will be displayed to the user.

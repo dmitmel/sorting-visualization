@@ -1,5 +1,5 @@
 language: rust
-rust: stable
+rust: beta
 cache: cargo
 
 addons:

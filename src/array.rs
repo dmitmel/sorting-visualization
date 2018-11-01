@@ -1,14 +1,15 @@
-//! The [`Array`](::array::Array) struct.
+//! The [`Array`](crate::array::Array) struct.
 
 use graphics::color;
 use graphics::types::Color;
 
-use state::{ArrayAccess, SharedState};
+use crate::state::{ArrayAccess, SharedState};
 
-/// A convenient wrapper around [`SharedState`] for [algorithms](::algorithms)
-/// that handles concurrency and all that stuff. **All methods in this struct
-/// lock the [state](`::state::AnimationState`) for as short as possible** so
-/// that the rendering thread can lock it when it wants to.
+/// A convenient wrapper around [`SharedState`] for
+/// [algorithms](crate::algorithms) that handles concurrency and all that stuff.
+/// **All methods in this struct lock the
+/// [state](crate::state::AnimationState) for as short as possible** so that
+/// the rendering thread can lock it when it wants to.
 #[derive(Debug)]
 pub struct Array(SharedState);
 
@@ -19,7 +20,8 @@ impl Array {
   }
 
   /// Puts the current thread to sleep for the specified amount of time and
-  /// blocks it if the animation is [paused](`::state::AnimationState::paused`).
+  /// blocks it if the animation is
+  /// [paused](crate::state::AnimationState::paused).
   pub fn wait(&self, ms: u64) {
     use std::thread;
     use std::time::Duration;
@@ -40,7 +42,7 @@ impl Array {
   }
 
   /// Returns the length of the underlying
-  /// [vector](::state::AnimationState::array).
+  /// [vector](crate::state::AnimationState::array).
   pub fn len(&self) -> usize {
     let anim = self.0.animation();
     anim.array.len()
@@ -72,14 +74,14 @@ impl Array {
   /// Resets color of the value at a given index (sets it to the transparent
   /// color).
   ///
-  /// _See_ [`AnimationState.colors`](::state::AnimationState::colors)
+  /// _See_ [`AnimationState.colors`](crate::state::AnimationState::colors)
   pub fn reset_color(&self, index: usize) {
     self.set_color(index, color::TRANSPARENT);
   }
 
   /// Sets color of the value at a given index.
   ///
-  /// _See_ [`AnimationState.colors`](::state::AnimationState::colors)
+  /// _See_ [`AnimationState.colors`](crate::state::AnimationState::colors)
   pub fn set_color(&self, index: usize, color: Color) {
     let mut anim = self.0.animation();
     anim.colors[index] = color;

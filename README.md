@@ -8,27 +8,25 @@ A [Rust](https://www.rust-lang.org/) program for visualizing sorting algorithms 
 
 [![Demo](https://i.imgur.com/jyPDiWX.gif)](https://gist.github.com/dmitmel/f8664421b547577065912c3246f4c1e9)
 
-## Installation
+## Setup
 
 ```bash
 git clone https://github.com/dmitmel/sorting-visualization
 cd sorting-visualization
-cargo install
+cargo build --release
 ```
 
-You can use `cargo run` if you don't want to install the binary system-wide.
-
-**Note:** compilation takes a lot of time
+**This project builds only on Beta or Nightly** because it uses Rust 2018.
 
 ## Usage
 
 ```bash
 # see 'Features' for the list of supported algorithms and their IDs
-sorting-visualization <algorithm>
+cargo run <algorithm>
 # set length of the array
-sorting-visualization <algorithm> --length <number>
+cargo run <algorithm> --length <number>
 # set order of elements in the array
-sorting-visualization <algorithm> --order <sorted|reversed|shuffled>
+cargo run <algorithm> --order <sorted|reversed|shuffled>
 ```
 
 ## Features
@@ -55,7 +53,7 @@ sorting-visualization <algorithm> --order <sorted|reversed|shuffled>
 cargo +nightly doc --document-private-items --open
 ```
 
-Nightly Rust is required for building docs because the `--document-private-items` is currently unstable. This option is very useful when developing an application (not library) because you would probably like to see the documentation of the entire codebase.
+Nightly Rust is required for building docs because it has [infra doc link resolution](https://github.com/rust-lang/rust/issues/43466) which is currently unstable.
 
 ## TODO
 
