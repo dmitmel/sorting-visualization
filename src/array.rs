@@ -26,18 +26,16 @@ impl Array {
     use std::thread;
     use std::time::Duration;
 
+    // animation state must be locked for as short as possible so we shouldn't
+    // keep it locked while sleeping (`thread::sleep` and `thread::park`)
+
     thread::sleep(Duration::from_micros({
-      // animation state should be locked for as short as possible so we lock it
-      // here, get the delay, then unlock it and finally lock it after
-      // `thread::sleep` finishes
       let anim = self.0.animation();
       (ms as f64 * 1000.0 / anim.speed) as u64
     }));
 
-    // wait while the animation is paused using a Condvar (API is a bit weird)
-    let mut anim = self.0.animation();
-    while anim.paused {
-      anim = self.0.pause_notifier.wait(anim).unwrap();
+    if self.0.animation().paused {
+      thread::park();
     }
   }
 

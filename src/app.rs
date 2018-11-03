@@ -5,7 +5,7 @@ use graphics::types::Color;
 use opengl_graphics::{GlGraphics, GlyphCache};
 use piston::input::*;
 
-use std::sync::{Arc, Condvar, Mutex};
+use std::sync::{Arc, Mutex};
 use std::thread;
 
 use crate::algorithms::Algorithm;
@@ -37,7 +37,10 @@ pub const STATUS_TEXT_MARGIN: f64 = 8.0;
 /// This struct contains all [rendering](App::render), [updating](App::update)
 /// and [input handling](App::button) logic.
 #[derive(Debug)]
-pub struct App(SharedState);
+pub struct App {
+  state: SharedState,
+  algorithm_thread: thread::JoinHandle<()>,
+}
 
 impl App {
   /// Creates a new app (with a state constructed from the given `array`) and
@@ -59,12 +62,11 @@ impl App {
         colors,
         array_accesses: Vec::with_capacity(1024),
       }),
-      pause_notifier: Condvar::new(),
     });
 
     let algorithm_state = state.clone();
 
-    thread::Builder::new()
+    let algorithm_thread = thread::Builder::new()
       .name("algorithm".to_string())
       .spawn(move || {
         let array = Array::new(algorithm_state);
@@ -73,7 +75,10 @@ impl App {
       })
       .unwrap();
 
-    App(state)
+    Self {
+      state,
+      algorithm_thread,
+    }
   }
 
   /// Draws the current [animation state](AnimationState).
@@ -88,9 +93,10 @@ impl App {
 
       clear(BACKGROUND_COLOR, gl);
 
-      // lock the animation state for the whole rendering cycle so that
-      // algorithm thread doesn't change something while rendering
-      let anim = self.0.animation();
+      // lock the animation state for the whole rendering cycle so that the
+      // algorithm thread doesn't change something while the main thread is
+      // doing rendering
+      let anim = self.state.animation();
 
       // transform of the bottom left point of the status text
       let status_text_transform = ctx.transform.trans(
@@ -162,7 +168,7 @@ impl App {
   /// Advances the [animation state](AnimationState) by a given amount
   /// of [time](UpdateArgs::dt).
   pub fn update(&mut self, args: UpdateArgs) {
-    let mut anim = self.0.animation();
+    let mut anim = self.state.animation();
 
     if !anim.paused {
       anim.time += args.dt * anim.speed;
@@ -186,7 +192,7 @@ impl App {
   /// | <kbd>&uparrow;</kbd>   | 2x faster    |
   /// | <kbd>&downarrow;</kbd> | 2x slower    |
   pub fn button(&mut self, args: ButtonArgs) {
-    let mut anim = self.0.animation();
+    let mut anim = self.state.animation();
 
     // import commonly used enum values in the current scope
     use self::Button::Keyboard;
@@ -195,8 +201,7 @@ impl App {
     match (args.button, args.state) {
       (Keyboard(Key::Space), Press) => {
         anim.paused = !anim.paused;
-        // tell the algorithm thread that the state has been updated
-        self.0.pause_notifier.notify_all();
+        self.algorithm_thread.thread().unpark();
       }
 
       (Keyboard(Key::Up), Press) => anim.speed *= 2.0,

@@ -1,6 +1,6 @@
 //! Structs and type definitions that describe the app state.
 
-use std::sync::{Arc, Condvar, Mutex, MutexGuard};
+use std::sync::{Arc, Mutex, MutexGuard};
 
 use graphics::types::Color;
 
@@ -15,12 +15,6 @@ pub struct State {
   /// because the animation state is accessed by both the main and the algorithm
   /// thread.
   pub animation: Mutex<AnimationState>,
-  /// A condition variable which is used to block the
-  /// [algorithm](crate::algorithms::Algorithm) thread when the animation is
-  /// [paused](AnimationState::paused).
-  ///
-  /// _See_ [`Array.wait`](crate::array::Array::wait)
-  pub pause_notifier: Condvar,
 }
 
 impl State {
