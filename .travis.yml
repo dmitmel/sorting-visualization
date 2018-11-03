@@ -7,7 +7,7 @@ addons:
     packages:
       - libsdl2-dev
 
-after_success: ./deploy-docs.sh
+after_success: ./scripts/deploy-docs.sh
 
 env:
   global:

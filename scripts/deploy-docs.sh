@@ -6,12 +6,7 @@ if [[ "$TRAVIS" == true ]]; then
   if [[ "$TRAVIS_BRANCH" == master ]]; then
     if [[ "$TRAVIS_PULL_REQUEST" == false ]]; then
       rustup toolchain install nightly # nightly version is requierd for building docs
-      cargo +nightly doc --document-private-items
-
-      CRATE_NAME="$(echo "$TRAVIS_REPO_SLUG" | cut -d '/' -f 2 | tr '-' '_')"
-      cat > target/doc/index.html <<HTML
-<meta http-equiv="refresh" content="0;url=$CRATE_NAME/index.html">
-HTML
+      ./scripts/docs.sh
 
       sudo pip install ghp-import
       ghp-import -n target/doc

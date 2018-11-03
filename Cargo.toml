@@ -19,3 +19,6 @@ piston2d-graphics = "0.26"
 piston2d-opengl_graphics = "0.53"
 pistoncore-sdl2_window = {git = "https://github.com/PistonDevelopers/sdl2_window"}
 rand = "0.5"
+
+[features]
+doc = []
