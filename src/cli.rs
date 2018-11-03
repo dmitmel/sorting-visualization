@@ -95,6 +95,8 @@ pub fn parse_options() -> Options {
 
   let matches = parser.get_matches();
 
+  // all option values can be safely unwrapped here because their corresponding
+  // options are either required or have a default value
   Options {
     algorithm: match matches.value_of(ALGORITHM_ARG).unwrap() {
       "bubble" => Box::new(algorithms::BubbleSort),

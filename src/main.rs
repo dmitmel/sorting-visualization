@@ -1,3 +1,5 @@
+use failure::{Error, ResultExt};
+
 use opengl_graphics::*;
 use piston::event_loop::*;
 use piston::input::*;
@@ -24,6 +26,24 @@ const WINDOW_TITLE: &str = clap::crate_name!();
 const WINDOW_SIZE: (u32, u32) = (640, 480);
 
 fn main() {
+  if let Err(error) = run() {
+    eprintln!("error: {}", error);
+
+    for cause in error.iter_causes() {
+      eprintln!("caused by: {}", cause);
+    }
+
+    eprintln!("{}", error.backtrace());
+    eprintln!(
+      "note: Run with `RUST_BACKTRACE=1` if you don't see a backtrace."
+    );
+
+    use std::process;
+    process::exit(1);
+  }
+}
+
+fn run() -> Result<(), Error> {
   let Options {
     algorithm,
     length,
@@ -37,7 +57,9 @@ fn main() {
     .exit_on_esc(true)
     .vsync(true)
     .build()
-    .expect("couldn't create window");
+    // convert `Result<_, String>` to `Result<_, Error>`
+    .map_err(|e| failure::format_err!("{}", e))
+    .context("couldn't create window")?;
   let mut gl = GlGraphics::new(OPENGL_VERSION);
 
   let mut array: Vec<u32> = (1..=length).collect();
@@ -54,11 +76,16 @@ fn main() {
   // load font for the status text
   let font = include_bytes!("../assets/Menlo-Regular.ttf");
   let mut glyphs = GlyphCache::from_bytes(font, (), TextureSettings::new())
-    .expect("couldn't load font");
+    // `GlyphCache::from_bytes` returns `Err(())` when an error occurs, so it's
+    // replaced with an error with a meaningful message here
+    .map_err(|_| failure::format_err!("couldn't load font"))?;
+
   // preload printable ASCII chars for faster rendering
   glyphs
     .preload_printable_ascii(app::STATUS_TEXT_FONT_SIZE)
-    .expect("couldn't preload printable ASCII chars");
+    // convert `Result<_, String>` to `Result<_, Error>`
+    .map_err(|e| failure::format_err!("{}", e))
+    .context("couldn't preload printable ASCII chars")?;
 
   let mut app = App::init(algorithm, array, speed);
 
@@ -76,4 +103,6 @@ fn main() {
       _ => {}
     }
   }
+
+  Ok(())
 }
