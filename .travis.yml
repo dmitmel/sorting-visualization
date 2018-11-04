@@ -9,7 +9,21 @@ addons:
     packages:
       - libsdl2-dev
 
-after_success: ./scripts/deploy-docs.sh
+jobs:
+  include:
+    - stage: deploy
+      if: type != pull_request AND branch = master
+
+      rust: nightly
+
+      addons: null
+
+      script: ./scripts/docs.sh
+      deploy:
+        provider: pages
+        skip-cleanup: true
+        github-token: $GH_TOKEN
+        local-dir: target/doc
 
 env:
   global:
