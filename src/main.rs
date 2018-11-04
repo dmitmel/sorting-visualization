@@ -92,9 +92,9 @@ fn run() -> Result<(), Error> {
 
   let mut app = App::init(algorithm, array, speed);
 
-  println!("Press [Space] to pause/resume the animation");
-  println!("Press [Up]    to speed up the animation");
-  println!("Press [Down]  to slow down the animation");
+  println!("Press [Space] to pause/resume");
+  println!("Press [Up]    to speed up");
+  println!("Press [Down]  to slow down");
   println!();
 
   let mut events = Events::new(EventSettings::new());

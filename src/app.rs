@@ -5,7 +5,6 @@ use graphics::types::Color;
 use opengl_graphics::{GlGraphics, GlyphCache};
 use piston::input::*;
 
-use std::sync::{Arc, Mutex};
 use std::thread;
 
 use crate::algorithms::Algorithm;
@@ -21,12 +20,12 @@ pub const VALUE_COLOR: Color = WHITE;
 
 /// Color of the values that were recently accessed.
 ///
-/// _See_ [`AnimationState.array_accesses`](AnimationState::array_accesses)
+/// _See_ [`State.array_accesses`](State::array_accesses)
 pub const ACCESSSED_VALUE_COLOR: Color = [1.0, 0.0, 0.0, 1.0];
 
 /// Time in seconds after which array accesses get removed.
 ///
-/// _See_ [`AnimationState.array_accesses`](AnimationState::array_accesses)
+/// _See_ [`State.array_accesses`](State::array_accesses)
 pub const ACCESSED_VALUE_TIMEOUT: f64 = 0.25;
 
 /// Font size of the status text in pixels.
@@ -53,15 +52,13 @@ impl App {
   ) -> Self {
     let colors = vec![TRANSPARENT; array.len()];
 
-    let state = Arc::new(State {
-      animation: Mutex::new(AnimationState {
-        time: 0.0,
-        speed,
-        paused: true,
-        array,
-        colors,
-        array_accesses: Vec::with_capacity(1024),
-      }),
+    let state = SharedState::new(State {
+      time: 0.0,
+      speed,
+      paused: true,
+      array,
+      colors,
+      array_accesses: Vec::with_capacity(1024),
     });
 
     let algorithm_state = state.clone();
@@ -81,7 +78,7 @@ impl App {
     }
   }
 
-  /// Draws the current [animation state](AnimationState).
+  /// Draws the current [state](State).
   pub fn render(
     &mut self,
     args: RenderArgs,
@@ -93,10 +90,10 @@ impl App {
 
       clear(BACKGROUND_COLOR, gl);
 
-      // lock the animation state for the whole rendering cycle so that the
-      // algorithm thread doesn't change something while the main thread is
-      // doing rendering
-      let anim = self.state.animation();
+      // lock the state for the whole rendering cycle so that the algorithm
+      // thread doesn't change something while the main thread is doing
+      // rendering
+      let state = self.state.get();
 
       // transform of the bottom left point of the status text
       let status_text_transform = ctx.transform.trans(
@@ -104,8 +101,11 @@ impl App {
         STATUS_TEXT_MARGIN + f64::from(STATUS_TEXT_FONT_SIZE),
       );
 
-      let status_text =
-        format!("paused = {}, speed = {}%", anim.paused, anim.speed * 100.0);
+      let status_text = format!(
+        "paused = {}, speed = {}%",
+        state.paused,
+        state.speed * 100.0
+      );
 
       // draw the status text
       text::Text::new_color(WHITE, STATUS_TEXT_FONT_SIZE)
@@ -118,13 +118,13 @@ impl App {
         )
         .unwrap();
 
-      let len = anim.array.len();
-      let max_value = *anim.array.iter().max().unwrap_or(&0);
+      let len = state.array.len();
+      let max_value = *state.array.iter().max().unwrap_or(&0);
 
       // draws a rectangle with a given color which represents a value at a
       // specified index
       let mut draw_value = |index: usize, color: Color| {
-        let value = anim.array[index];
+        let value = state.array[index];
 
         let window_w = f64::from(args.width);
         let window_h = f64::from(args.height);
@@ -143,46 +143,44 @@ impl App {
       };
 
       // draw all values
-      for index in 0..anim.array.len() {
+      for index in 0..state.array.len() {
         draw_value(index, VALUE_COLOR);
       }
 
       // draw array accesses
-      for access in &anim.array_accesses {
+      for access in &state.array_accesses {
         let mut color = ACCESSSED_VALUE_COLOR;
         // map age of this access to the [1.0, 0.0] interval (alpha component)
         // so that new accesses are opaque and old ones are transparent
         color[3] =
-          (1.0 - (anim.time - access.time) / ACCESSED_VALUE_TIMEOUT) as f32;
+          (1.0 - (state.time - access.time) / ACCESSED_VALUE_TIMEOUT) as f32;
 
         draw_value(access.index, color);
       }
 
       // draw colored overlays (marks) for some values
-      for (index, color) in anim.colors.iter().enumerate() {
+      for (index, color) in state.colors.iter().enumerate() {
         draw_value(index, *color);
       }
     });
   }
 
-  /// Advances the [animation state](AnimationState) by a given amount
-  /// of [time](UpdateArgs::dt).
+  /// Advances the [state](State) by a given amount of [time](UpdateArgs::dt).
   pub fn update(&mut self, args: UpdateArgs) {
-    let mut anim = self.state.animation();
+    let mut state = self.state.get();
 
-    if !anim.paused {
-      anim.time += args.dt * anim.speed;
+    if !state.paused {
+      state.time += args.dt * state.speed;
     }
 
     // time is copied (f64 implements the Copy trait) to a variable because it
     // can't be accessed when array_accesses is borrowed mutably
-    let time = anim.time;
-    let accesses = &mut anim.array_accesses;
+    let time = state.time;
+    let accesses = &mut state.array_accesses;
     accesses.retain(|access| time - access.time < ACCESSED_VALUE_TIMEOUT);
   }
 
-  /// Handles user input and updates the [animation state](AnimationState). It
-  /// also prints the important bits of the state if it has actually changed.
+  /// Handles user input and updates the [state](State).
   ///
   /// # Controls
   ///
@@ -192,7 +190,7 @@ impl App {
   /// | <kbd>&uparrow;</kbd>   | 2x faster    |
   /// | <kbd>&downarrow;</kbd> | 2x slower    |
   pub fn button(&mut self, args: ButtonArgs) {
-    let mut anim = self.state.animation();
+    let mut state = self.state.get();
 
     // import commonly used enum values in the current scope
     use self::Button::Keyboard;
@@ -200,12 +198,12 @@ impl App {
 
     match (args.button, args.state) {
       (Keyboard(Key::Space), Press) => {
-        anim.paused = !anim.paused;
+        state.paused = !state.paused;
         self.algorithm_thread.thread().unpark();
       }
 
-      (Keyboard(Key::Up), Press) => anim.speed *= 2.0,
-      (Keyboard(Key::Down), Press) => anim.speed /= 2.0,
+      (Keyboard(Key::Up), Press) => state.speed *= 2.0,
+      (Keyboard(Key::Down), Press) => state.speed /= 2.0,
 
       _ => {}
     };

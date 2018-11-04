@@ -29,7 +29,7 @@ pub struct Options {
   pub length: u32,
   /// Order of elements in the [array](crate::array::Array).
   pub order: Order,
-  /// [Speed](crate::state::AnimationState::speed) factor.
+  /// [Speed](crate::state::State::speed) factor.
   pub speed: f64,
 }
 
