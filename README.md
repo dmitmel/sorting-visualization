@@ -16,8 +16,6 @@ cd sorting-visualization
 cargo build --release
 ```
 
-**This project builds only on Beta or Nightly** because it uses Rust 2018.
-
 ## Usage
 
 ```bash
@@ -52,8 +50,6 @@ cargo run <algorithm> --order <sorted|reversed|shuffled>
 ```bash
 ./docs.sh
 ```
-
-Nightly Rust is required for building docs because it has [infra doc link resolution](https://github.com/rust-lang/rust/issues/43466) which is currently unstable.
 
 ## TODO
 

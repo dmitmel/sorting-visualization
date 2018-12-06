@@ -1,23 +1,17 @@
 language: rust
-rust:
-  - beta
-  - nightly
+rust: stable
 cache: cargo
-
-addons:
-  apt:
-    packages:
-      - libsdl2-dev
 
 jobs:
   include:
+    - stage: test
+      addons:
+        apt:
+          packages:
+            - libsdl2-dev
+
     - stage: deploy
       if: type != pull_request AND branch = master
-
-      rust: nightly
-
-      addons: null
-
       script: ./docs.sh
       deploy:
         provider: pages
