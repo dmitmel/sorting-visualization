@@ -143,7 +143,7 @@ impl App {
       };
 
       // draw all values
-      for index in 0..state.array.len() {
+      for index in 0..len {
         draw_value(index, VALUE_COLOR);
       }
 
