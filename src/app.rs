@@ -30,8 +30,12 @@ pub const ACCESSED_VALUE_TIMEOUT: f64 = 0.25;
 
 /// Font size of the status text in pixels.
 pub const STATUS_TEXT_FONT_SIZE: u32 = 16;
+
 /// Margins between the status text and window borders.
 pub const STATUS_TEXT_MARGIN: f64 = 8.0;
+
+/// Factor for increasing / decreasing speed of sorting array
+pub const SPEED_FACTOR: f64 = 2.0;
 
 /// This struct contains all [rendering](App::render), [updating](App::update)
 /// and [input handling](App::button) logic.
@@ -202,8 +206,8 @@ impl App {
         self.algorithm_thread.thread().unpark();
       }
 
-      (Keyboard(Key::Up), Press) => state.speed *= 2.0,
-      (Keyboard(Key::Down), Press) => state.speed /= 2.0,
+      (Keyboard(Key::Up), Press) => state.speed *= SPEED_FACTOR,
+      (Keyboard(Key::Down), Press) => state.speed /= SPEED_FACTOR,
 
       _ => {}
     };
