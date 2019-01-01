@@ -154,10 +154,12 @@ impl App {
       // draw array accesses
       for access in &state.array_accesses {
         let mut color = ACCESSSED_VALUE_COLOR;
-        // map age of this access to the [1.0, 0.0] interval (alpha component)
+        // map age of this access to the [1.0, 0.0] interval (alpha channell)
         // so that new accesses are opaque and old ones are transparent
-        color[3] =
-          (1.0 - (state.time - access.time) / ACCESSED_VALUE_TIMEOUT) as f32;
+        let alpha_channell_index = color.len() - 1;
+
+        color[alpha_channell_index] =
+        (1.0 - (state.time - access.time) / ACCESSED_VALUE_TIMEOUT) as f32;
 
         draw_value(access.index, color);
       }
