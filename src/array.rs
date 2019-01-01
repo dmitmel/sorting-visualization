@@ -1,6 +1,6 @@
 //! The [`Array`](crate::array::Array) struct.
 
-use graphics::color::{TRANSPARENT};
+use graphics::color::TRANSPARENT;
 use graphics::types::Color;
 
 use crate::state::{ArrayAccess, SharedState};
