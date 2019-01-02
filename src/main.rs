@@ -18,6 +18,9 @@ mod state;
 use crate::app::App;
 use crate::cli::{Options, Order};
 
+extern crate glob;
+use glob::glob;
+
 /// Required version of OpenGL.
 ///
 /// _Note:_ change this to [`OpenGL::V2_1`] if it doesn't work.
@@ -95,6 +98,14 @@ fn run() -> Result<(), Error> {
   println!("Press [Space] to pause/resume");
   println!("Press [Up]    to speed up");
   println!("Press [Down]  to slow down");
+  println!("List of avaliable algorithms:");
+  
+  for e in glob("./src/algorithms/*").expect("Failed to read glob pattern") {
+       println!("{}", e.unwrap().display().to_string()
+       .replace("src/algorithms/", "")
+       .replace(".rs", ""));
+   }
+
   println!();
 
   let mut events = Events::new(EventSettings::new());

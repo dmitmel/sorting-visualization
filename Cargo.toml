@@ -19,6 +19,7 @@ piston2d-graphics = "0.28"
 piston2d-opengl_graphics = "0.57"
 pistoncore-sdl2_window = "0.52"
 rand = "0.5"
+glob = "0.2"
 
 [features]
 doc = []
