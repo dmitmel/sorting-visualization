@@ -99,10 +99,12 @@ fn run() -> Result<(), Error> {
   println!("Press [Up]    to speed up");
   println!("Press [Down]  to slow down");
   println!("List of avaliable algorithms:");
-  
-  for e in glob("./src/algorithms/*").expect("Failed to read glob pattern") {
+
+  let  absolute_path = "src/algorithms/";
+
+  for e in glob(&format!("./{}*", absolute_path)).expect("Failed to read glob pattern") {
        println!("{}", e.unwrap().display().to_string()
-       .replace("src/algorithms/", "")
+       .replace(absolute_path, "")
        .replace(".rs", ""));
    }
 
