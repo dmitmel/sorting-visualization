@@ -19,12 +19,11 @@ cargo build --release
 ## Usage
 
 ```bash
-# see 'Features' for the list of supported algorithms and their IDs
+# see 'Features' section for the list of supported algorithms and their IDs
+# and use the --help flag to print all available animation options
 cargo run <algorithm>
-# set length of the array
-cargo run <algorithm> --length <number>
-# set order of elements in the array
-cargo run <algorithm> --order <sorted|reversed|shuffled>
+# list all available algorithms
+cargo run -- --list
 ```
 
 ## Features
@@ -37,6 +36,7 @@ cargo run <algorithm> --order <sorted|reversed|shuffled>
   - [Insertion sort](https://en.wikipedia.org/wiki/Insertion_sort) \[`insertion`\]
   - [Quicksort](https://en.wikipedia.org/wiki/Quicksort) \[`quicksort`\]
   - [Selection sort](https://en.wikipedia.org/wiki/Selection_sort) \[`selection`\]
+  - [Shellsort](https://en.wikipedia.org/wiki/Shellsort) \[`shellsort`\]
 - Animation controls:
   - <kbd>Space</kbd> - pause/resume
   - <kbd>&uparrow;</kbd> - 2x faster
