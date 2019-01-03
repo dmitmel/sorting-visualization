@@ -9,10 +9,6 @@ use crate::algorithms::Algorithm;
 /// [get its value](clap::ArgMatches::value_of).
 const ALGORITHM_ARG: &str = "ALGORITHM";
 /// [Internal name](clap::Arg::with_name) of the
-/// [`--list`](Options::list) argument which is used to
-/// [return if an argument was present](clap::ArgMatches::is_present).
-const LIST_ARG: &str = "LIST";
-/// [Internal name](clap::Arg::with_name) of the
 /// [`--length`/`-l`](Options::length) option which is used to
 /// [get its value](clap::ArgMatches::value_of).
 const LENGTH_OPT: &str = "LENGTH";
@@ -24,6 +20,10 @@ const ORDER_OPT: &str = "ORDER";
 /// [`--speed`/`-s`](Options::speed) option which is used to
 /// [get its value](clap::ArgMatches::value_of).
 const SPEED_OPT: &str = "SPEED";
+/// [Internal name](clap::SubCommand::with_name) of the
+/// [list] subcommand which is used to
+/// [return list of available algorithms](clap::ArgMatches::is_present).
+const LIST_SUB: &str = "list";
 
 /// Contains all options that can be provided by a user using the CLI.
 pub struct Options {
@@ -35,8 +35,6 @@ pub struct Options {
   pub order: Order,
   /// [Speed](crate::state::State::speed) factor.
   pub speed: f64,
-  /// List of all available algotirhms
-  pub list: bool,
 }
 
 /// Order of elements in the [array](crate::array::Array).
@@ -75,11 +73,6 @@ pub fn parse_options() -> Options {
         .case_insensitive(true),
     )
     .arg(
-      Arg::from_usage("[list]")
-        .long("list")
-        .help("List of all available algotirhms"),
-    )
-    .arg(
       Arg::with_name(LENGTH_OPT)
         .short("l")
         .long("length")
@@ -101,9 +94,44 @@ pub fn parse_options() -> Options {
         .long("speed")
         .help("Sets animation speed")
         .default_value("1.0"),
+    )
+    .subcommand(
+      SubCommand::with_name(LIST_SUB)
+        .about("List all available algorithms")
+        .help("List of all available algotirhms"),
     );
 
   let matches = parser.get_matches();
+
+  match matches.subcommand() {
+    (LIST_SUB, Some(_m)) => display_algorithm_list(),
+    _ => (),
+  }
+
+  fn display_algorithm_list() {
+    extern crate glob;
+    use glob::glob;
+    use std::process;
+
+    println!("List of available algorithms:");
+
+    let absolute_path = "src/algorithms/";
+
+    for e in glob(&format!("./{}*", absolute_path))
+      .expect("Failed to read glob pattern")
+    {
+      println!(
+        "{}",
+        e.unwrap()
+          .display()
+          .to_string()
+          .replace(absolute_path, "")
+          .replace(".rs", "")
+      );
+    }
+
+    process::exit(1);
+  }
 
   // all option values can be safely unwrapped here because their corresponding
   // options are either required or have a default value
@@ -129,7 +157,5 @@ pub fn parse_options() -> Options {
     },
 
     speed: value_t_or_exit!(matches, SPEED_OPT, f64),
-
-    list: value_t_or_exit!(matches, LIST_ARG, bool),
   }
 }

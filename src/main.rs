@@ -18,9 +18,6 @@ mod state;
 use crate::app::App;
 use crate::cli::{Options, Order};
 
-extern crate glob;
-use glob::glob;
-
 /// Required version of OpenGL.
 ///
 /// _Note:_ change this to [`OpenGL::V2_1`] if it doesn't work.
@@ -55,23 +52,7 @@ fn run() -> Result<(), Error> {
     length,
     order,
     speed,
-    list,
   } = cli::parse_options();
-
-  if list {
-      println!("List of avaliable algorithms:");
-
-      let  absolute_path = "src/algorithms/";
-
-      for e in glob(&format!("./{}*", absolute_path)).expect("Failed to read glob pattern") {
-           println!("{}", e.unwrap().display().to_string()
-           .replace(absolute_path, "")
-           .replace(".rs", ""));
-       }
-
-       use std::process;
-       process::exit(1);
-  }
 
   let window_title = format!("{} - {}", WINDOW_TITLE, algorithm.name());
   let mut window: Window = WindowSettings::new(window_title, WINDOW_SIZE)

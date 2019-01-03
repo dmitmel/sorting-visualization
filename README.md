@@ -25,6 +25,8 @@ cargo run <algorithm>
 cargo run <algorithm> --length <number>
 # set order of elements in the array
 cargo run <algorithm> --order <sorted|reversed|shuffled>
+# display list of available algorithms
+cargo run list
 ```
 
 ## Features
