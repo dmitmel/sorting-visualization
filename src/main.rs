@@ -41,8 +41,8 @@ fn main() {
       "note: Run with `RUST_BACKTRACE=1` if you don't see a backtrace."
     );
 
-    use std::process;
-    process::exit(1);
+    use std::process::exit;
+    exit(1);
   }
 }
 
@@ -95,7 +95,6 @@ fn run() -> Result<(), Error> {
   println!("Press [Space] to pause/resume");
   println!("Press [Up]    to speed up");
   println!("Press [Down]  to slow down");
-
   println!();
 
   let mut events = Events::new(EventSettings::new());

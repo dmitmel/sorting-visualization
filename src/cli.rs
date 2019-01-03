@@ -111,7 +111,7 @@ pub fn parse_options() -> Options {
   fn display_algorithm_list() {
     extern crate glob;
     use glob::glob;
-    use std::process;
+    use std::process::exit;
 
     println!("List of available algorithms:");
 
@@ -130,7 +130,7 @@ pub fn parse_options() -> Options {
       );
     }
 
-    process::exit(1);
+    exit(1);
   }
 
   // all option values can be safely unwrapped here because their corresponding
