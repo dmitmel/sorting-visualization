@@ -51,6 +51,8 @@ cargo run <algorithm> --order <sorted|reversed|shuffled>
 ./docs.sh
 ```
 
+**Nightly Rust is required for building docs** because it has [infra doc link resolution](https://github.com/rust-lang/rust/issues/43466) which is currently unstable.
+
 ## TODO
 
 1. Ask someone to proof-read the code
