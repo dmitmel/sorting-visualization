@@ -9,6 +9,10 @@ use crate::algorithms::Algorithm;
 /// [get its value](clap::ArgMatches::value_of).
 const ALGORITHM_ARG: &str = "ALGORITHM";
 /// [Internal name](clap::Arg::with_name) of the
+/// [`--list`](Options::list) argument which is used to
+/// [return if an argument was present](clap::ArgMatches::is_present).
+const LIST_ARG: &str = "LIST";
+/// [Internal name](clap::Arg::with_name) of the
 /// [`--length`/`-l`](Options::length) option which is used to
 /// [get its value](clap::ArgMatches::value_of).
 const LENGTH_OPT: &str = "LENGTH";
@@ -31,6 +35,8 @@ pub struct Options {
   pub order: Order,
   /// [Speed](crate::state::State::speed) factor.
   pub speed: f64,
+  /// List of all available algotirhms
+  pub list: bool,
 }
 
 /// Order of elements in the [array](crate::array::Array).
@@ -55,6 +61,25 @@ pub fn parse_options() -> Options {
     .setting(AppSettings::NextLineHelp)
     .setting(AppSettings::ColoredHelp)
     .arg(
+      Arg::with_name(ALGORITHM_ARG)
+        .help("Sets sorting algorithm")
+        .possible_values(&[
+          "bubble",
+          "cycle",
+          "gnome",
+          "insertion",
+          "quicksort",
+          "selection",
+          "shell",
+        ])
+        .case_insensitive(true),
+    )
+    .arg(
+      Arg::from_usage("[list]")
+        .long("list")
+        .help("List of all available algotirhms"),
+    )
+    .arg(
       Arg::with_name(LENGTH_OPT)
         .short("l")
         .long("length")
@@ -69,21 +94,6 @@ pub fn parse_options() -> Options {
         .possible_values(&["sorted", "reversed", "shuffled"])
         .case_insensitive(true)
         .default_value("shuffled"),
-    )
-    .arg(
-      Arg::with_name(ALGORITHM_ARG)
-        .help("Sets sorting algorithm")
-        .possible_values(&[
-          "bubble",
-          "cycle",
-          "gnome",
-          "insertion",
-          "quicksort",
-          "selection",
-          "shell",
-        ])
-        .case_insensitive(true)
-        .required(true),
     )
     .arg(
       Arg::with_name(SPEED_OPT)
@@ -119,5 +129,7 @@ pub fn parse_options() -> Options {
     },
 
     speed: value_t_or_exit!(matches, SPEED_OPT, f64),
+
+    list: value_t_or_exit!(matches, LIST_ARG, bool),
   }
 }

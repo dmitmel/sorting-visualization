@@ -55,7 +55,23 @@ fn run() -> Result<(), Error> {
     length,
     order,
     speed,
+    list,
   } = cli::parse_options();
+
+  if list {
+      println!("List of avaliable algorithms:");
+
+      let  absolute_path = "src/algorithms/";
+
+      for e in glob(&format!("./{}*", absolute_path)).expect("Failed to read glob pattern") {
+           println!("{}", e.unwrap().display().to_string()
+           .replace(absolute_path, "")
+           .replace(".rs", ""));
+       }
+
+       use std::process;
+       process::exit(1);
+  }
 
   let window_title = format!("{} - {}", WINDOW_TITLE, algorithm.name());
   let mut window: Window = WindowSettings::new(window_title, WINDOW_SIZE)
@@ -98,15 +114,6 @@ fn run() -> Result<(), Error> {
   println!("Press [Space] to pause/resume");
   println!("Press [Up]    to speed up");
   println!("Press [Down]  to slow down");
-  println!("List of avaliable algorithms:");
-
-  let  absolute_path = "src/algorithms/";
-
-  for e in glob(&format!("./{}*", absolute_path)).expect("Failed to read glob pattern") {
-       println!("{}", e.unwrap().display().to_string()
-       .replace(absolute_path, "")
-       .replace(".rs", ""));
-   }
 
   println!();
 
