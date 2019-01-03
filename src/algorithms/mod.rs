@@ -1,6 +1,8 @@
 //! Different sorting algorithms as well as the general
 //! [`Algorithm`](crate::algorithms::Algorithm) trait.
 
+use std::collections::HashMap;
+
 // re-export Array struct for use in algorithms
 pub use crate::array::Array;
 
@@ -14,13 +16,32 @@ pub trait Algorithm {
   fn name(&self) -> String;
 }
 
-/// A shorthand macro for declaring some modules and then re-exporting al
-/// contents of those modules.
-macro_rules! reexport {
-  ($($name:ident),*) => ($(
-    pub mod $name;
-    pub use self::$name::*;
-  )*);
+/// A shorthand macro that declares modules of all algorithms, re-exports those
+/// algorithms and generates a function that returns all algorithms.
+macro_rules! algorithms {
+  ($($id:ident => $type:ident,)+) => {
+    $(
+      pub mod $id;
+      pub use self::$id::$type;
+    )*
+
+    /// Returns a [hashmap](HashMap) of all algorithms. It is used in the
+    /// [cli](crate::cli) module.
+    pub fn all() -> HashMap<String, Box<dyn Algorithm + Send>> {
+      let mut algorithms: HashMap<String, Box<dyn Algorithm + Send>> =
+        HashMap::new();
+      $(algorithms.insert(stringify!($id).to_string(), Box::new(self::$id::$type));)*
+      algorithms
+    }
+  };
 }
 
-reexport![bubble, cycle, gnome, insertion, quicksort, selection, shell];
+algorithms![
+  bubble => BubbleSort,
+  cycle => CycleSort,
+  gnome => GnomeSort,
+  insertion => InsertionSort,
+  quicksort => Quicksort,
+  selection => SelectionSort,
+  shellsort => Shellsort,
+];

@@ -1,8 +1,7 @@
 //! Command-line interface and command-line argument parsing. Uses [clap] under
 //! the hood.
 
-use crate::algorithms;
-use crate::algorithms::Algorithm;
+use crate::algorithms::{self, Algorithm};
 
 /// [Internal name](clap::Arg::with_name) of the
 /// [algorithm](Options::algorithm) argument which is used to
@@ -51,6 +50,10 @@ pub enum Order {
 pub fn parse_options() -> Options {
   use clap::*;
 
+  let mut algorithms = algorithms::all();
+  let algorithm_ids: Vec<&str> =
+    algorithms.keys().map(|s| &s as &str).collect();
+
   let parser = app_from_crate!()
     .setting(AppSettings::NextLineHelp)
     .setting(AppSettings::ColoredHelp)
@@ -73,15 +76,7 @@ pub fn parse_options() -> Options {
     .arg(
       Arg::with_name(ALGORITHM_ARG)
         .help("Sets sorting algorithm")
-        .possible_values(&[
-          "bubble",
-          "cycle",
-          "gnome",
-          "insertion",
-          "quicksort",
-          "selection",
-          "shell",
-        ])
+        .possible_values(&algorithm_ids)
         .case_insensitive(true)
         .required(true),
     )
@@ -98,15 +93,12 @@ pub fn parse_options() -> Options {
   // all option values can be safely unwrapped here because their corresponding
   // options are either required or have a default value
   Options {
-    algorithm: match matches.value_of(ALGORITHM_ARG).unwrap() {
-      "bubble" => Box::new(algorithms::BubbleSort),
-      "cycle" => Box::new(algorithms::CycleSort),
-      "gnome" => Box::new(algorithms::GnomeSort),
-      "insertion" => Box::new(algorithms::InsertionSort),
-      "quicksort" => Box::new(algorithms::Quicksort),
-      "selection" => Box::new(algorithms::SelectionSort),
-      "shell" => Box::new(algorithms::Shellsort),
-      _ => unreachable!(),
+    algorithm: {
+      let id = matches.value_of(ALGORITHM_ARG).unwrap();
+      // remove may seem a bit odd here but it's the only safe and logical (if
+      // you think about it) way to get the ownership of a value which is inside
+      // of a container (i.e. HashMap, Vec etc)
+      algorithms.remove(id).unwrap()
     },
 
     length: value_t_or_exit!(matches, LENGTH_OPT, u32),
