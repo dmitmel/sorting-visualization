@@ -21,7 +21,7 @@ pub const VALUE_COLOR: Color = WHITE;
 /// Color of the values that were recently accessed.
 ///
 /// _See_ [`State.array_accesses`](State::array_accesses)
-pub const ACCESSSED_VALUE_COLOR: Color = [1.0, 0.0, 0.0, 1.0];
+pub const ACCESSED_VALUE_COLOR: Color = [1.0, 0.0, 0.0, 1.0];
 
 /// Time in seconds after which array accesses get removed.
 ///
@@ -149,7 +149,7 @@ impl App {
 
       // draw array accesses
       for access in &state.array_accesses {
-        let mut color = ACCESSSED_VALUE_COLOR;
+        let mut color = ACCESSED_VALUE_COLOR;
         // map age of this access to the [1.0, 0.0] interval (alpha component)
         // so that new accesses are opaque and old ones are transparent
         color[3] =
