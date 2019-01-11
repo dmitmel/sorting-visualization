@@ -1,6 +1,6 @@
 //! The [`Array`](crate::array::Array) struct.
 
-use graphics::color;
+use graphics::color::TRANSPARENT;
 use graphics::types::Color;
 
 use crate::state::{ArrayAccess, SharedState};
@@ -76,7 +76,7 @@ impl Array {
   ///
   /// _See_ [`State.colors`](crate::state::State::colors)
   pub fn reset_color(&self, index: usize) {
-    self.set_color(index, color::TRANSPARENT);
+    self.set_color(index, TRANSPARENT);
   }
 
   /// Sets color of the value at a given index.
