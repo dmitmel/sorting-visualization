@@ -41,6 +41,7 @@ algorithms![
   cycle => CycleSort,
   gnome => GnomeSort,
   insertion => InsertionSort,
+  merge => MergeSort,
   quicksort => Quicksort,
   selection => SelectionSort,
   shellsort => Shellsort,
