@@ -1,7 +1,6 @@
 //! [Quicksort](https://en.wikipedia.org/wiki/Quicksort)
 
 use super::{Algorithm, Array};
-use crate::app::{ACCESSED_VALUE_COLOR};
 
 /// [Quicksort](https://en.wikipedia.org/wiki/Quicksort)
 pub struct Quicksort;
@@ -25,7 +24,7 @@ impl Quicksort {
       for i in low..=pivot - 1 {
         array.set_color(i as usize, [0.0, 1.0, 0.0, 0.3]);
       }
-      array.set_color(pivot as usize, ACCESSED_VALUE_COLOR);
+      array.set_color(pivot as usize, [1.0, 0.0, 0.0, 1.0]);
       for i in pivot + 1..=high {
         array.set_color(i as usize, [0.0, 0.0, 1.0, 0.3]);
       }
