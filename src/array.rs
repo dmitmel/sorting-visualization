@@ -3,7 +3,7 @@
 use graphics::color::TRANSPARENT;
 use graphics::types::Color;
 
-use crate::state::{ArrayAccess, SharedState};
+use crate::state::SharedState;
 
 /// A convenient wrapper around [`SharedState`] for
 /// [algorithms](crate::algorithms) that handles concurrency and all that stuff.
@@ -53,8 +53,7 @@ impl Array {
     let mut state = self.0.get();
     let value = state.array[index];
 
-    let time = state.time;
-    state.array_accesses.push(ArrayAccess { time, index });
+    state.array_accesses[index] = state.time;
 
     value
   }
@@ -63,6 +62,8 @@ impl Array {
   pub fn set(&self, index: usize, value: u32) {
     let mut state = self.0.get();
     state.array[index] = value;
+
+    state.array_accesses[index] = state.time;
   }
 
   /// Swaps two values at given indices.

@@ -18,12 +18,12 @@ pub const BACKGROUND_COLOR: Color = BLACK;
 /// Color of rectangles that represent the array values.
 pub const VALUE_COLOR: Color = WHITE;
 
-/// Color of the values that were recently accessed.
+/// Color of the values that have been recently accessed.
 ///
 /// _See_ [`State.array_accesses`](State::array_accesses)
 pub const ACCESSED_VALUE_COLOR: Color = [1.0, 0.0, 0.0, 1.0];
 
-/// Time in seconds after which array accesses get removed.
+/// Time in seconds after which array accesses are removed.
 ///
 /// _See_ [`State.array_accesses`](State::array_accesses)
 pub const ACCESSED_VALUE_TIMEOUT: f64 = 0.25;
@@ -54,7 +54,8 @@ impl App {
     array: Vec<u32>,
     speed: f64,
   ) -> Self {
-    let colors = vec![TRANSPARENT; array.len()];
+    let array_len = array.len();
+    let colors = vec![TRANSPARENT; array_len];
 
     let state = SharedState::new(State {
       time: 0.0,
@@ -62,7 +63,7 @@ impl App {
       paused: true,
       array,
       colors,
-      array_accesses: Vec::with_capacity(1024),
+      array_accesses: vec![NO_ARRAY_ACCESS; array_len],
     });
 
     let algorithm_state = state.clone();
@@ -152,16 +153,20 @@ impl App {
       }
 
       // draw array accesses
-      for access in &state.array_accesses {
+      for (index, access_time) in state.array_accesses.iter().enumerate() {
+        if *access_time < 0.0 {
+          continue;
+        }
+
         let mut color = ACCESSED_VALUE_COLOR;
+
+        let access_age = state.time - access_time;
         // map age of this access to the [1.0, 0.0] interval of the alpha (transparency) component
         // so that new accesses are opaque and old ones are transparent
+        let alpha = (1.0 - access_age / ACCESSED_VALUE_TIMEOUT) as f32;
 
-        let alpha =
-          (1.0 - (state.time - access.time) / ACCESSED_VALUE_TIMEOUT) as f32;
         color[color.len() - 1] = alpha;
-
-        draw_value(access.index, color);
+        draw_value(index, color);
       }
 
       // draw colored overlays (marks) for some values
@@ -182,8 +187,11 @@ impl App {
     // time is copied (f64 implements the Copy trait) to a variable because it
     // can't be accessed when array_accesses is borrowed mutably
     let time = state.time;
-    let accesses = &mut state.array_accesses;
-    accesses.retain(|access| time - access.time < ACCESSED_VALUE_TIMEOUT);
+    for access_time in state.array_accesses.iter_mut() {
+      if time - *access_time > ACCESSED_VALUE_TIMEOUT {
+        *access_time = NO_ARRAY_ACCESS;
+      }
+    }
   }
 
   /// Handles user input and updates the [state](State).
