@@ -23,4 +23,4 @@ macro_rules! reexport {
   )*);
 }
 
-reexport![bubble, cycle, gnome, insertion, quicksort, selection, shell];
+reexport![bubble, cycle, gnome, insertion, merge, quicksort, selection, shell];

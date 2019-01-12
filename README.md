@@ -35,6 +35,7 @@ cargo run <algorithm> --order <sorted|reversed|shuffled>
   - [Cycle sort](https://en.wikipedia.org/wiki/Cycle_sort) \[`cycle`\]
   - [Gnome sort](https://en.wikipedia.org/wiki/Gnome_sort) \[`gnome`\]
   - [Insertion sort](https://en.wikipedia.org/wiki/Insertion_sort) \[`insertion`\]
+  - [Merge sort](https://en.wikipedia.org/wiki/Merge_sort) \[`merge`\]
   - [Quicksort](https://en.wikipedia.org/wiki/Quicksort) \[`quicksort`\]
   - [Selection sort](https://en.wikipedia.org/wiki/Selection_sort) \[`selection`\]
 - Animation controls:
