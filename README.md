@@ -56,11 +56,9 @@ cargo run -- --list
 
 ## TODO
 
-1. Ask someone to proof-read the code
-2. Add a CLI option to list available algorithms
-3. User-friendly GUI
-4. More algorithms
-5. Sound?
+1. User-friendly GUI
+2. More algorithms
+3. Sound?
 
 ## Contributing
 
