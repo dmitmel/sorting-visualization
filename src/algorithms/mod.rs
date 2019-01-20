@@ -38,6 +38,7 @@ macro_rules! algorithms {
 
 algorithms![
   bubble => BubbleSort,
+  cocktail => CocktailSort,
   cycle => CycleSort,
   gnome => GnomeSort,
   insertion => InsertionSort,

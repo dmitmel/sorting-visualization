@@ -31,6 +31,7 @@ cargo run -- --list
 - CLI
 - Supports different algorithms (IDs are in brackets):
   - [Bubble sort](https://en.wikipedia.org/wiki/Bubble_sort) \[`bubble`\]
+  - [Cocktail sort](https://en.wikipedia.org/wiki/Cocktail_shaker_sort) \[`cocktail`\]
   - [Cycle sort](https://en.wikipedia.org/wiki/Cycle_sort) \[`cycle`\]
   - [Gnome sort](https://en.wikipedia.org/wiki/Gnome_sort) \[`gnome`\]
   - [Insertion sort](https://en.wikipedia.org/wiki/Insertion_sort) \[`insertion`\]
