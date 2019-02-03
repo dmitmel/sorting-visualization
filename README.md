@@ -34,6 +34,7 @@ cargo run -- --list
   - [Cocktail sort](https://en.wikipedia.org/wiki/Cocktail_shaker_sort) \[`cocktail`\]
   - [Cycle sort](https://en.wikipedia.org/wiki/Cycle_sort) \[`cycle`\]
   - [Gnome sort](https://en.wikipedia.org/wiki/Gnome_sort) \[`gnome`\]
+  - [Heap sort](https://en.wikipedia.org/wiki/Heapsort) \[`heap`\]
   - [Insertion sort](https://en.wikipedia.org/wiki/Insertion_sort) \[`insertion`\]
   - [Merge sort](https://en.wikipedia.org/wiki/Merge_sort) \[`merge`\]
   - [Quicksort](https://en.wikipedia.org/wiki/Quicksort) \[`quicksort`\]

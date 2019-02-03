@@ -41,6 +41,7 @@ algorithms![
   cocktail => CocktailSort,
   cycle => CycleSort,
   gnome => GnomeSort,
+  heap => HeapSort,
   insertion => InsertionSort,
   merge => MergeSort,
   quicksort => Quicksort,
