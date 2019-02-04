@@ -7,21 +7,38 @@
 
   impl Algorithm for HeapSort {
      fn sort(&self, array: Array) {
-         let len = array.len();
+         let n = array.len();
 
-         for i in (len / 2 - 1..0).rev() {
-             heapify(&array, len, i);
+         for i in ((n / 2 - 1)..0).rev() {
+             heapify(&array, n, i);
          }
 
-         for i in (len - 1..0).rev() {
-             let temp = array.get(0);
-             array.set(0, i as u32);
-             array.set(i, temp);
-
+         for i in ((n - 1)..0).rev() {
+             array.swap(0, i);
              heapify(&array, i, 0);
          }
 
-         fn heapify(array: &Array, len: usize, i: usize) {}
+         fn heapify(array: &Array, n: usize, i: usize) {
+             let mut largest = i;
+             let left = 2 * i + 1;
+             let right = 2 * i + 2;
+
+             if left < n && array.get(left) > array.get(largest) {
+                 largest = left;
+             }
+
+             if right < n && array.get(right) > array.get(largest) {
+                 largest = right;
+             }
+
+             if largest != i {
+                 array.set_color(i, [0.0, 1.0, 0.0, 0.8]);
+                 array.swap(i, largest);
+                 heapify(array, n, largest);
+                 array.wait(5);
+                 array.reset_color(i);
+             }
+         }
      }
 
       fn name(&self) -> String {
