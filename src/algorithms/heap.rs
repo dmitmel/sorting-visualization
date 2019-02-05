@@ -7,15 +7,16 @@
 
   impl Algorithm for HeapSort {
      fn sort(&self, array: Array) {
+         let first = 0;
          let n = array.len();
 
-         for i in ((n / 2 - 1)..0).rev() {
+         for i in (first..n / 2 - 1).rev() {
              heapify(&array, n, i);
          }
 
-         for i in ((n - 1)..0).rev() {
-             array.swap(0, i);
-             heapify(&array, i, 0);
+         for i in (first..n).rev() {
+             array.swap(first, i);
+             heapify(&array, i, first);
          }
 
          fn heapify(array: &Array, n: usize, i: usize) {
