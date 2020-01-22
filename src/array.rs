@@ -9,7 +9,7 @@ use crate::state::SharedState;
 /// [algorithms](crate::algorithms) that handles concurrency and all that stuff.
 /// **All methods in this struct lock the [state](crate::state::State) for as
 /// short as possible** so that the rendering thread can lock it when it wants.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Array(SharedState);
 
 impl Array {
@@ -70,6 +70,19 @@ impl Array {
   pub fn swap(&self, a: usize, b: usize) {
     let mut state = self.0.get();
     state.array.swap(a, b);
+  }
+
+//  /// Reverses the Array.
+//  pub fn reverse(&self) {
+//    let mut state = self.0.get();
+//    state.array.reverse();
+//  }
+
+  /// Shuffles the Array.
+  pub fn shuffle(&self) {
+    use rand::{thread_rng, Rng};
+    let mut state = self.0.get();
+    thread_rng().shuffle(&mut state.array);
   }
 
   /// Resets color of the value at a given index (sets it to the transparent

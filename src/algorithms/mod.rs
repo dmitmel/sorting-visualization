@@ -47,4 +47,5 @@ algorithms![
   quicksort => Quicksort,
   selection => SelectionSort,
   shellsort => Shellsort,
+  all => All,
 ];
