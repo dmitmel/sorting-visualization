@@ -1,11 +1,10 @@
-//! [Gnome sort](https://en.wikipedia.org/wiki/Gnome_sort)
+
 
 use super::{Algorithm, Array};
 
-/// [Gnome sort](https://en.wikipedia.org/wiki/Gnome_sort)
-pub struct GnomeSort;
+pub struct BogoSort;
 
-impl Algorithm for GnomeSort {
+impl Algorithm for BogoSort {
   fn sort(&self, array: Array) {
     let len = array.len();
     let mut done = false;
@@ -27,6 +26,6 @@ impl Algorithm for GnomeSort {
   }
 
   fn name(&self) -> String {
-    "Gnome sort".to_string()
+    "Bogo sort".to_string()
   }
 }
