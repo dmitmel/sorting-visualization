@@ -18,6 +18,10 @@ impl Algorithm for BogoSort {
       loop{
         if i == 0 || array.get(i) >= array.get(i - 1) {
           i += 1;
+          if i == len {
+            done = true;
+            break;
+          }
         } else {
           break;
         }
