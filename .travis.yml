@@ -10,6 +10,13 @@ jobs:
         apt:
           packages:
             - libsdl2-dev
+      before_script:
+        - rustup component add rustfmt clippy
+      script:
+        - cargo build --verbose
+        - cargo test --verbose
+        - cargo fmt -- --check
+        - cargo clippy --verbose
 
     - stage: deploy
       if: type != pull_request AND branch = master
@@ -17,6 +24,7 @@ jobs:
       script: ./docs.sh
       deploy:
         provider: pages
+        skip_cleanup: true
         token: $GH_TOKEN
         local_dir: target/doc
 
