@@ -131,8 +131,8 @@ impl App {
       let mut draw_value = |index: usize, color: Color| {
         let value = state.array[index];
 
-        let window_w = f64::from(args.width);
-        let window_h = f64::from(args.height);
+        let window_w: f64 = args.width;
+        let window_h: f64 = args.height;
 
         let array_y =
           STATUS_TEXT_MARGIN * 2.0 + f64::from(STATUS_TEXT_FONT_SIZE);

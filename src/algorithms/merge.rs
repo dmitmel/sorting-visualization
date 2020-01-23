@@ -84,10 +84,10 @@ fn merge(array: &Array, left: usize, middle: usize, right: usize) {
 }
 
 fn sub_array(array: &Array, begin: usize, size: usize) -> Vec<u32> {
-  let mut arr = vec![0; size];
-  for i in 0..size {
-    arr[i] = array.get(begin + i);
-    array.wait(10);
-  }
-  arr
+  (0..size)
+    .map(|i| {
+      array.wait(10);
+      array.get(begin + i)
+    })
+    .collect()
 }

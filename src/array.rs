@@ -72,11 +72,11 @@ impl Array {
     state.array.swap(a, b);
   }
 
-//  /// Reverses the Array.
-//  pub fn reverse(&self) {
-//    let mut state = self.0.get();
-//    state.array.reverse();
-//  }
+  //  /// Reverses the Array.
+  //  pub fn reverse(&self) {
+  //    let mut state = self.0.get();
+  //    state.array.reverse();
+  //  }
 
   /// Shuffles the Array.
   pub fn shuffle(&self) {
