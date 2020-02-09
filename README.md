@@ -1,6 +1,6 @@
 # sorting-visualization
 
-[![Travis CI](https://img.shields.io/travis/dmitmel/sorting-visualization.svg?style=flat-square)](https://travis-ci.org/dmitmel/sorting-visualization)
+[![Travis CI](https://img.shields.io/travis/dmitmel/sorting-visualization.svg?style=flat-square)](https://travis-ci.com/dmitmel/sorting-visualization)
 [![docs: GH pages](https://img.shields.io/badge/docs-GH%20pages-blue.svg?style=flat-square)](https://dmitmel.github.io/sorting-visualization)
 [![contributors: welcome](https://img.shields.io/badge/contributors-welcome-brightgreen.svg?style=flat-square)](https://github.com/dmitmel/sorting-visualization/pulls)
 
