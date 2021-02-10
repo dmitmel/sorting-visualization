@@ -2,7 +2,7 @@
 
 use super::{Algorithm, Array};
 
-/// [Heap sort](https://en.wikipedia.org/wiki/Heapsort
+/// [Heap sort](https://en.wikipedia.org/wiki/Heapsort)
 pub struct HeapSort;
 
 impl Algorithm for HeapSort {
