@@ -75,8 +75,6 @@ jobs:
         with:
           toolchain: nightly
           override: true
-      - name: Install SDL2
-        run: sudo apt-get install libsdl2-dev
 
       - uses: actions/cache@v2
         with:
