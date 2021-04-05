@@ -32,34 +32,19 @@ jobs:
             ${{ runner.os }}-rust-${{ steps.install_rust.outputs.rustc_hash }}-
 
       - name: cargo check
-        uses: actions-rs/cargo@v1
-        with:
-          command: check
-          args: --verbose --workspace --all-targets
+        run: cargo check --verbose --workspace --all-targets
 
       - name: cargo build
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --verbose
+        run: cargo build --verbose
 
       - name: cargo test
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: --verbose --workspace
+        run: cargo test --verbose --workspace
 
       - name: cargo fmt
-        uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: --verbose --all -- --check
+        run: cargo fmt --verbose --all -- --check
 
       - name: cargo clippy
-        uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: --verbose --workspace
+        run: cargo clippy --verbose --workspace
 
   upload_docs:
     name: Upload documentation
