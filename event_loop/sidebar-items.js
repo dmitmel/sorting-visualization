@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["DEFAULT_MAX_FPS","The default maximum frames per second."],["DEFAULT_UPS","The default updates per second."],["DEFAULT_UPS_RESET","The default delayed updates reset."]],"struct":[["EventSettings","Stores event loop settings."],["Events","An event loop iterator"]],"trait":[["EventLoop","Methods implemented for changing event loop settings."]]});

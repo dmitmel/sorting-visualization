@@ -1,0 +1,143 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/state.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>state.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../sorting_visualization/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+                <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1"> 1</span>
+<span id="2"> 2</span>
+<span id="3"> 3</span>
+<span id="4"> 4</span>
+<span id="5"> 5</span>
+<span id="6"> 6</span>
+<span id="7"> 7</span>
+<span id="8"> 8</span>
+<span id="9"> 9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+</pre><div class="example-wrap"><pre class="rust ">
+<span class="doccomment">//! Structs and type definitions that describe the app state.</span>
+
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>, <span class="ident">MutexGuard</span>};
+
+<span class="kw">use</span> <span class="ident">graphics</span>::<span class="ident">types</span>::<span class="ident">Color</span>;
+
+<span class="doccomment">/// A wrapper around [`State`] that can be [safely shared](std::sync) between</span>
+<span class="doccomment">/// threads.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SharedState</span>(<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">State</span><span class="op">&gt;</span><span class="op">&gt;</span>);
+
+<span class="kw">impl</span> <span class="ident">SharedState</span> {
+  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">state</span>: <span class="ident">State</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="ident">SharedState</span>(<span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">state</span>)))
+  }
+
+  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MutexGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">State</span><span class="op">&gt;</span> {
+    <span class="self">self</span>.<span class="number">0</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>()
+  }
+}
+
+<span class="doccomment">/// Contains the state of the whole [app](crate::app::App).</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">State</span> {
+  <span class="doccomment">/// Current time in seconds. [Updated](crate::app::App::update) if the</span>
+  <span class="doccomment">/// animation is not [paused](State::paused).</span>
+  <span class="kw">pub</span> <span class="ident">time</span>: <span class="ident">f64</span>,
+  <span class="doccomment">/// Speed factor (e.g. 1.0 - normal, 2.0 - 2x faster, 0.5 - 2x slower, etc).</span>
+  <span class="doccomment">/// Affects the animation [time](State::time) and</span>
+  <span class="doccomment">/// [delays](crate::array::Array::wait) in</span>
+  <span class="doccomment">/// [algorithms](crate::algorithms::Algorithm).</span>
+  <span class="kw">pub</span> <span class="ident">speed</span>: <span class="ident">f64</span>,
+  <span class="doccomment">/// Is the animation paused?</span>
+  <span class="kw">pub</span> <span class="ident">paused</span>: <span class="ident">bool</span>,
+  <span class="doccomment">/// An array which is being sorted.</span>
+  <span class="kw">pub</span> <span class="ident">array</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+  <span class="doccomment">/// Colored **overlays** of each value. **Overlay** means that these colors</span>
+  <span class="doccomment">/// are _not_ used to [draw](crate::app::App::render) the values, instead</span>
+  <span class="doccomment">/// they&#39;re drawn **over** the values. These colors can be used by an</span>
+  <span class="doccomment">/// [algorithm](crate::algorithms::Algorithm) to highlight important array</span>
+  <span class="doccomment">/// elements.</span>
+  <span class="doccomment">///</span>
+  <span class="doccomment">/// The length of this vector is equal to the [array](State::array)</span>
+  <span class="doccomment">/// length, so every color in this vector corresponds to a value with the</span>
+  <span class="doccomment">/// exact same index.</span>
+  <span class="kw">pub</span> <span class="ident">colors</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Color</span><span class="op">&gt;</span>,
+  <span class="doccomment">/// Contains timestamps of the most recent array accesses of every element,</span>
+  <span class="doccomment">/// which are drawn like [colored overlays](State::colors). The length of this</span>
+  <span class="doccomment">/// vector is equal to the [array](State::array) length, so for every element</span>
+  <span class="doccomment">/// in the [array](State::array) _only the most recent_ timestamp is stored</span>
+  <span class="doccomment">/// here (not a big deal), so we can avoid memory allocations while program is</span>
+  <span class="doccomment">/// running, and this is a pretty simple optimization. To optimize things even</span>
+  <span class="doccomment">/// further I&#39;ve done this: if an element hasn&#39;t been accessed yet or it has</span>
+  <span class="doccomment">/// been accessed [long ago](crate::app::ACCESSED_VALUE_TIMEOUT), then instead</span>
+  <span class="doccomment">/// of using an `Option&lt;f64&gt;` type for every element, I use negative values</span>
+  <span class="doccomment">/// because they don&#39;t make any sense in the context of time (this saves</span>
+  <span class="doccomment">/// [8 bytes](https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2018&amp;gist=0e335d0d6109850c7df766fd131c8916)</span>
+  <span class="doccomment">/// for every element). When an [algorithm](crate::algorithms::Algorithm)</span>
+  <span class="doccomment">/// [reads](crate::array::Array::get) or [writes](crate::array::Array::set) a</span>
+  <span class="doccomment">/// value at a certain index from/to the array, the current</span>
+  <span class="doccomment">/// [time](State::time) is stored at exactly the same index in this vector.</span>
+  <span class="kw">pub</span> <span class="ident">array_accesses</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>,
+}
+
+<span class="doccomment">/// A constant that means &quot;there&#39;s no array access here&quot;. _See_ documentation of</span>
+<span class="doccomment">/// [`State.array_accesses`](State::array_accesses) to understand why this</span>
+<span class="doccomment">/// constant is a negative number.</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NO_ARRAY_ACCESS</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="op">-</span><span class="number">1.0</span>;
+</pre></div>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="sorting_visualization" data-search-js="../../search-index.js"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>

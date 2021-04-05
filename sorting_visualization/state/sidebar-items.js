@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["NO_ARRAY_ACCESS","A constant that means “there’s no array access here”. See documentation of `State.array_accesses` to understand why this constant is a negative number."]],"struct":[["SharedState","A wrapper around [`State`] that can be safely shared between threads."],["State","Contains the state of the whole app."]]});

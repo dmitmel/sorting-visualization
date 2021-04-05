@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Array","A convenient wrapper around [`SharedState`] for algorithms that handles concurrency and all that stuff. All methods in this struct lock the state for as short as possible so that the rendering thread can lock it when it wants."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GnomeSort","Gnome sort"]]});
