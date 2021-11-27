@@ -30,19 +30,7 @@ const WINDOW_SIZE: (u32, u32) = (640, 480);
 
 fn main() {
   if let Err(error) = run() {
-    eprintln!("error: {}", error);
-
-    for cause in error.iter_causes() {
-      eprintln!("caused by: {}", cause);
-    }
-
-    eprintln!("{}", error.backtrace());
-    eprintln!(
-      "note: Run with `RUST_BACKTRACE=1` if you don't see a backtrace."
-    );
-
-    use std::process;
-    process::exit(1);
+    handle_error(error);
   }
 }
 
@@ -108,4 +96,22 @@ fn run() -> Result<(), Error> {
   }
 
   Ok(())
+}
+
+pub fn handle_error(error: failure::Error) -> ! {
+  use std::{process, thread};
+
+  let thread = thread::current();
+  let name = thread.name().unwrap_or("<unnamed>");
+
+  eprintln!("error in thread '{}': {}", name, error);
+
+  for cause in error.iter_causes() {
+    eprintln!("caused by: {}", cause);
+  }
+
+  eprintln!("{}", error.backtrace());
+  eprintln!("note: Run with `RUST_BACKTRACE=1` if you don't see a backtrace.");
+
+  process::exit(1);
 }

@@ -198,7 +198,6 @@ impl App {
   pub fn button(&mut self, args: ButtonArgs) {
     let mut state = self.state.get();
 
-    // import commonly used enum values in the current scope
     use self::Button::Keyboard;
     use self::ButtonState::Press;
 

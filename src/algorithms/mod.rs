@@ -46,3 +46,6 @@ algorithms![
   selection => SelectionSort,
   shellsort => Shellsort,
 ];
+
+pub mod lua;
+pub use self::lua::LuaAlgorithm;

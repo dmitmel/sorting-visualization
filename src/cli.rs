@@ -1,12 +1,14 @@
 //! Command-line interface and command-line argument parsing. Uses [clap] under
 //! the hood.
 
+use std::path::PathBuf;
+
 use crate::algorithms::{self, Algorithm};
 
 /// [Internal name](clap::Arg::with_name) of the
-/// [algorithm](Options::algorithm) argument which is used to
+/// [algorithm path](Options::algorithm) argument which is used to
 /// [get its value](clap::ArgMatches::value_of).
-const ALGORITHM_ARG: &str = "ALGORITHM";
+const ALGORITHM_PATH_ARG: &str = "ALGORITHM_PATH";
 /// [Internal name](clap::Arg::with_name) of the
 /// [`--length`/`-l`](Options::length) option which is used to
 /// [get its value](clap::ArgMatches::value_of).
@@ -24,7 +26,7 @@ const SPEED_OPT: &str = "SPEED";
 /// [get its value](clap::ArgMatches::value_of).
 const LIST_OPT: &str = "LIST";
 
-/// Contains all options that can be provided by a user using the CLI.
+/// Contains all options that can be provided using the CLI.
 pub struct Options {
   /// Instance of a sorting [algorithm](Algorithm) struct.
   pub algorithm: Box<dyn Algorithm + Send>,
@@ -83,11 +85,9 @@ pub fn parse_options() -> Options {
         .default_value("shuffled"),
     )
     .arg(
-      Arg::with_name(ALGORITHM_ARG)
-        .help("Sets sorting algorithm")
-        .possible_values(&algorithm_ids)
-        .case_insensitive(true)
-        .required_unless(LIST_OPT),
+      Arg::with_name(ALGORITHM_PATH_ARG)
+        .help("Sets path to a sorting algorithm")
+        .required(true),
     )
     .arg(
       Arg::with_name(SPEED_OPT)
@@ -112,13 +112,11 @@ pub fn parse_options() -> Options {
   // all option values can be safely unwrapped here because their corresponding
   // options are either required or have a default value
   Options {
-    algorithm: {
-      let id = matches.value_of(ALGORITHM_ARG).unwrap();
-      // remove may seem a bit odd here but it's the only safe and logical (if
-      // you think about it) way to get the ownership of a value which is inside
-      // of a container (i.e. HashMap, Vec etc)
-      algorithms.remove(id).unwrap()
-    },
+    algorithm: Box::new({
+      let path =
+        PathBuf::from(matches.value_of_os(ALGORITHM_PATH_ARG).unwrap());
+      algorithms::LuaAlgorithm::load(path).unwrap()
+    }),
 
     length: value_t_or_exit!(matches, LENGTH_OPT, u32),
 

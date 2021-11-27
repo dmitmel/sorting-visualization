@@ -597,6 +597,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "rlua"
+version = "0.15.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "cc 1.0.28 (registry+https://github.com/rust-lang/crates.io-index)",
+ "failure 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "libc 0.2.45 (registry+https://github.com/rust-lang/crates.io-index)",
+ "num-traits 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "rustc-demangle"
 version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -675,6 +686,7 @@ dependencies = [
  "piston2d-opengl_graphics 0.57.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "pistoncore-sdl2_window 0.52.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "rand 0.5.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rlua 0.15.3 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -862,6 +874,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum read_color 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)" = "9f4c8858baa4ad3c8bcc156ae91a0ffe22b76a3975c40c49b4f04c15c6bce0da"
 "checksum redox_syscall 0.1.49 (registry+https://github.com/rust-lang/crates.io-index)" = "f22c50afdcf3f0a31ebb6b47697f6a7c5e5a24967e842858118bce0615f0afad"
 "checksum redox_termios 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "7e891cfe48e9100a70a3b6eb652fef28920c117d366339687bd5576160db0f76"
+"checksum rlua 0.15.3 (registry+https://github.com/rust-lang/crates.io-index)" = "187f5174337682c1ae2d957b107f4c84e204ce2e084c76532194d3849db09a28"
 "checksum rustc-demangle 0.1.11 (registry+https://github.com/rust-lang/crates.io-index)" = "01b90379b8664dd83460d59bdc5dd1fd3172b8913788db483ed1325171eab2f7"
 "checksum rusttype 0.7.3 (registry+https://github.com/rust-lang/crates.io-index)" = "436c67ae0d0d24f14e1177c3ed96780ee16db82b405f0fba1bb80b46c9a30625"
 "checksum scoped_threadpool 0.1.9 (registry+https://github.com/rust-lang/crates.io-index)" = "1d51f5df5af43ab3f1360b429fa5e0152ac5ce8c0bd6485cae490332e96846a8"
