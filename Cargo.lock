@@ -606,6 +606,7 @@ dependencies = [
  "piston2d-opengl_graphics 0.53.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "pistoncore-sdl2_window 0.50.0 (git+https://github.com/PistonDevelopers/sdl2_window)",
  "rand 0.5.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "sdl2 0.31.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]

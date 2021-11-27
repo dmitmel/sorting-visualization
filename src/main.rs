@@ -6,6 +6,7 @@ extern crate rand;
 extern crate graphics;
 extern crate opengl_graphics;
 extern crate piston;
+extern crate sdl2;
 extern crate sdl2_window;
 
 use opengl_graphics::*;
@@ -60,6 +61,46 @@ fn main() {
       thread_rng().shuffle(&mut array);
     }
   }
+
+  use sdl2::audio::{AudioCallback, AudioSpecDesired};
+  let desired_spec = AudioSpecDesired {
+    freq: Some(44_100),
+    channels: Some(1), // mono
+    samples: None,     // default sample size
+  };
+
+  struct Wave {
+    phase_inc: f32,
+    phase: f32,
+    volume: f32,
+  }
+
+  impl AudioCallback for Wave {
+    type Channel = f32;
+
+    fn callback(&mut self, out: &mut [f32]) {
+      // for x in out.iter_mut() {
+      for (i, x) in out.iter_mut().rev().enumerate() {
+        // *x = self.phase.sin() * self.volume;
+        // self.phase = (self.phase + self.phase_inc) % 1.0;
+        *x = i as f32;
+      }
+    }
+  }
+
+  let audio_subsystem = window.sdl_context.audio().unwrap();
+  let device = audio_subsystem
+    .open_playback(None, &desired_spec, |spec| {
+      println!("{:?}", spec);
+      Wave {
+        phase_inc: 60000.0 / spec.freq as f32,
+        phase: 0.0,
+        volume: 0.25,
+      }
+    })
+    .unwrap();
+
+  device.resume();
 
   let mut app = App::init(algorithm, array, speed);
 
